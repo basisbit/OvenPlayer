@@ -11,7 +11,7 @@ export function trim(string) {
  * @return     {string}  Extension
  */
 export const extractExtension = function(path) {
-    if(!path || path.substr(0,4)=='rtmp') {
+    if(!path) {
         return "";
     }
     function getAzureFileFormat(path) {

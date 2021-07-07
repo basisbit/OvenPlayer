@@ -4,7 +4,6 @@
 import OvenTemplate from "view/engine/OvenTemplate";
 import BigButton from "view/components/helpers/bigButton";
 import MessageBox from "view/components/helpers/messageBox";
-import CaptionViewer from "view/components/helpers/captionViewer";
 import Thumbnail from "view/components/helpers/thumbnail";
 import WaterMark from "view/components/helpers/waterMark";
 import Spinner from "view/components/helpers/spinner";
@@ -35,7 +34,7 @@ import {
 
 const Helpers = function($container, api){
     let firstRun = false;
-    let bigButton = "", messageBox = "",  captionViewer = "", spinner = "", thumbnail, waterMark;
+    let bigButton = "", messageBox = "",  spinner = "", thumbnail, waterMark;
     let mutedMessage = null;
     let hasThumbnail = api.getConfig().image || api.getConfig().title;
     let hasWaterMark = api.getConfig().waterMark && api.getConfig().waterMark.image ||
@@ -88,12 +87,6 @@ const Helpers = function($container, api){
         }
 
         spinner = Spinner($current, api);
-
-        /*if(api.getCaptionList() && api.getCaptionList().length > 0){
-            captionViewer = CaptionViewer($current, api);
-        }*/
-
-        captionViewer = CaptionViewer($current, api);
 
         api.on(READY, function() {
             if(hasThumbnail){

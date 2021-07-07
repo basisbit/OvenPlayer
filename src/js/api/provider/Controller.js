@@ -1,7 +1,6 @@
 import SupportChecker from "api/SupportChecker";
-import {ApiRtmpExpansion} from 'api/ApiExpansions';
 import {
-    PROVIDER_HTML5, PROVIDER_WEBRTC, PROVIDER_DASH, PROVIDER_HLS, PROVIDER_RTMP, ERRORS, INIT_UNSUPPORT_ERROR
+    PROVIDER_HTML5, PROVIDER_WEBRTC, ERRORS, INIT_UNSUPPORT_ERROR
 } from "api/constants";
 
 /**
@@ -44,36 +43,6 @@ const Controller = function () {
                 }, 'ovenplayer.provider.WebRTCProvider'
             );
         },
-        dash: function () {
-            return require.ensure(['api/provider/html5/providers/Dash'], function (require) {
-                    const provider = require('api/provider/html5/providers/Dash').default;
-                    registeProvider(PROVIDER_DASH, provider);
-                    return {name: PROVIDER_DASH, provider: provider};
-                }, function (err) {
-                    throw new Error('Network error');
-                }, 'ovenplayer.provider.DashProvider'
-            );
-        },
-        hls: function () {
-            return require.ensure(['api/provider/html5/providers/Hls'], function (require) {
-                    const provider = require('api/provider/html5/providers/Hls').default;
-                    registeProvider(PROVIDER_HLS, provider);
-                    return {name: PROVIDER_HLS, provider: provider};
-                }, function (err) {
-                    throw new Error('Network error');
-                }, 'ovenplayer.provider.HlsProvider'
-            );
-        },
-        rtmp: function () {
-            return require.ensure(['api/provider/flash/providers/Rtmp'], function (require) {
-                    const provider = require('api/provider/flash/providers/Rtmp').default;
-                    registeProvider(PROVIDER_RTMP, provider);
-                    return {name: PROVIDER_RTMP, provider: provider};
-                }, function (err) {
-                    throw new Error('Network error');
-                }, 'ovenplayer.provider.RtmpProvider'
-            );
-        }
     };
 
 

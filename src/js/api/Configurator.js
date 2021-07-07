@@ -19,15 +19,12 @@ const Configurator = function(options, provider){
             mute: false,
             volume: 100,
             loop : false,
-            controls : true,
             autoStart : false,
             autoFallback: true,
             timecode : true,
             sourceIndex : -1,
             browser : "",
             hidePlaylistIcon : false,
-            rtmpBufferTime : 1,
-            rtmpBufferTimeMax : 3,
             adClient : "googleima",
             currentProtocolOnly : false,
             systemText : null,
@@ -97,10 +94,6 @@ const Configurator = function(options, provider){
         playbackRates.sort();
 
         config.playbackRates = playbackRates;
-
-        config.rtmpBufferTime = config.rtmpBufferTime > 10 ? 10 : config.rtmpBufferTime;
-        config.rtmpBufferTimeMax = config.rtmpBufferTimeMax > 50 ? 50 : config.rtmpBufferTimeMax;
-
 
         if (config.playbackRates.indexOf(config.playbackRate) < 0) {
             config.playbackRate = 1;
@@ -196,12 +189,6 @@ const Configurator = function(options, provider){
     };
     that.isTimecodeMode = () => {
         return spec.timecode;
-    };
-    that.getRtmpBufferTime = () => {
-        return spec.rtmpBufferTime;
-    };
-    that.getRtmpBufferTimeMax = () => {
-        return spec.rtmpBufferTimeMax;
     };
 
     that.isMute = () =>{

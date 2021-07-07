@@ -1,4 +1,3 @@
-import CaptionManager from "api/caption/Manager";
 import Configurator from "api/Configurator";
 import EventEmitter from "api/EventEmitter";
 import LazyCommandExecutor from "api/LazyCommandExecutor";
@@ -6,9 +5,8 @@ import MediaManager from "api/media/Manager";
 import PlaylistManager from "api/playlist/Manager";
 import ProviderController from "api/provider/Controller";
 import {READY, ERRORS, ERROR, CONTENT_TIME_MODE_CHANGED, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_PLAY, NETWORK_UNSTABLED, PLAYER_WEBRTC_NETWORK_SLOW, PLAYER_WEBRTC_UNEXPECTED_DISCONNECT, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR,
-    PLAYER_FILE_ERROR, PROVIDER_DASH, PROVIDER_HLS, PROVIDER_WEBRTC, PROVIDER_HTML5, PROVIDER_RTMP, ALL_PLAYLIST_ENDED} from "api/constants";
+    PLAYER_FILE_ERROR, PROVIDER_WEBRTC, PROVIDER_HTML5, ALL_PLAYLIST_ENDED} from "api/constants";
 import {version} from 'version';
-import {ApiRtmpExpansion} from 'api/ApiExpansions';
 import {analUserAgent} from "utils/browser";
 import {pickCurrentSource} from "api/provider/utils";
 import LA$ from 'utils/likeA$';
@@ -34,7 +32,6 @@ const Api = function(container){
     let currentProvider = "";
     let playerConfig = "";
     let lazyQueue = "";
-    let captionManager = "";
 
     let webrtcRetry = false;
     let WEBRTC_RETRY_COUNT = 3;
@@ -99,12 +96,6 @@ const Api = function(container){
                 currentProvider.destroy();
                 currentProvider = null;
             }
-            if(captionManager){
-                captionManager.destroy();
-                captionManager = null;
-            }
-            captionManager = CaptionManager(that, playlistManager.getCurrentPlaylistIndex());
-            OvenPlayerConsole.log("API : init() captions");
 
             let currentSourceIndex = pickCurrentSource(playlistManager.getCurrentSources(), playerConfig);
             let providerName = Providers[currentSourceIndex]["name"];
@@ -115,11 +106,6 @@ const Api = function(container){
                 playerConfig,
                 playlistManager.getCurrentAdTag()
             );
-
-            if(providerName === PROVIDER_RTMP){
-                //If provider type is RTMP, we accepts RtmpExpansion.
-                Object.assign(that, ApiRtmpExpansion(currentProvider));
-            }
 
             //This passes the event created by the Provider to API.
             currentProvider.on("all", function(name, data){
@@ -451,32 +437,6 @@ const Api = function(container){
         return currentProvider.setAutoQuality(isAuto);
     }
 
-    that.getCaptionList = () => {
-        if(!captionManager){return null;}
-        OvenPlayerConsole.log("API : getCaptionList() ", captionManager.getCaptionList());
-        return captionManager.getCaptionList();
-    }
-    that.getCurrentCaption = () => {
-        if(!captionManager){return null;}
-        OvenPlayerConsole.log("API : getCurrentCaption() ", captionManager.getCurrentCaption());
-        return captionManager.getCurrentCaption();
-    }
-    that.setCurrentCaption = (index) => {
-        if(!captionManager){return null;}
-        OvenPlayerConsole.log("API : setCurrentCaption() ", index);
-        captionManager.setCurrentCaption(index);
-    }
-    that.addCaption = (track) => {
-        if(!captionManager){return null;}
-        OvenPlayerConsole.log("API : addCaption() ")
-        return captionManager.addCaption(track);
-    }
-    that.removeCaption = (index) => {
-        if(!captionManager){return null;}
-        OvenPlayerConsole.log("API : removeCaption() ", index)
-        return captionManager.removeCaption(index);
-    }
-
     that.getBuffer = () => {
         if(!currentProvider){return null;}
         OvenPlayerConsole.log("API : getBuffer() ", currentProvider.getBuffer());
@@ -499,11 +459,6 @@ const Api = function(container){
 
         if (lazyQueue) {
             lazyQueue.destroy();
-        }
-
-        if(captionManager){
-            captionManager.destroy();
-            captionManager = null;
         }
 
         if(currentProvider){

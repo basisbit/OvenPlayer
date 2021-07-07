@@ -1,5 +1,5 @@
 import _ from "utils/underscore";
-import {isRtmp, isWebRTC, isDash, isHls } from "utils/validator";
+import {isWebRTC } from "utils/validator";
 import {extractExtension ,trim} from "../../utils/strings";
 import SupportChecker from "../SupportChecker";
 import {PLAYLIST_CHANGED} from "api/constants";
@@ -43,14 +43,8 @@ const Manager = function(provider){
             source.type = source.type.replace(mimetypeRegEx, '$1');
         }
 
-        if(isRtmp(source.file)){
-            source.type = 'rtmp';
-        }else if(isWebRTC(source.file)){
+        if(isWebRTC(source.file)){
             source.type = 'webrtc';
-        }else if(isHls(source.file, source.type)){
-            source.type = 'hls';
-        }else if(isDash(source.file, source.type)){
-            source.type = 'dash';
         }else if (!source.type) {
             source.type = extractExtension(source.file);
         }
@@ -177,10 +171,6 @@ const Manager = function(provider){
 
             if(!_.isArray(playlistItem.tracks)){
                 playlistItem.tracks = [];
-            }
-            if(_.isArray(playlistItem.captions)){
-                playlistItem.tracks = playlistItem.tracks.concat(playlistItem.captions);
-                delete playlistItem.captions;
             }
 
             playlistItem.tracks = playlistItem.tracks.map(function(track){

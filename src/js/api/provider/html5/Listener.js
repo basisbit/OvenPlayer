@@ -24,9 +24,7 @@ import {
     PLAYER_UNKNWON_DECODE_ERROR,
     PLAYER_FILE_ERROR,
     PROVIDER_HTML5,
-    PROVIDER_WEBRTC,
-    PROVIDER_DASH,
-    PROVIDER_HLS
+    PROVIDER_WEBRTC
 } from "api/constants";
 import {extractVideoElement, errorTrigger} from "api/provider/utils";
 

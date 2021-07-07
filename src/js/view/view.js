@@ -3,9 +3,7 @@
  */
 import OvenTemplate from 'view/engine/OvenTemplate';
 import Helpers from 'view/components/helpers/main';
-import Controls from 'view/components/controls/main';
 import PanelManager from "view/global/PanelManager";
-import ContextPanel from 'view/components/helpers/contextPanel';
 import LA$ from 'utils/likeA$';
 import {
     READY,
@@ -30,7 +28,7 @@ import ResizeSensor from "resize-sensor";
 require('../../stylesheet/ovenplayer.less');
 
 const View = function($container){
-    let viewTemplate = "", controls = "", helper = "", $playerRoot, contextPanel = "", api = "", autoHideTimer = "", playerState = STATE_IDLE;
+    let viewTemplate = "", helper = "", $playerRoot, api = "", autoHideTimer = "", playerState = STATE_IDLE;
     let isShiftPressed = false;
     let panelManager = PanelManager();
     let screenSize = "";
@@ -101,13 +99,6 @@ const View = function($container){
         }
         api.setVolume(newVolume);
     };
-    function createContextPanel(pageX, pageY){
-        if(contextPanel){
-            contextPanel.destroy();
-            contextPanel = null;
-        }
-        contextPanel = ContextPanel($playerRoot, api, {pageX : pageX, pageY : pageY});
-    };
 
     function calcPlayerWidth(){
         let playerWidth = $playerRoot.width();
@@ -158,23 +149,12 @@ const View = function($container){
             helper.destroy();
             helper = null;
         }
-        if(controls){
-            controls.destroy();
-            controls = null;
-        }
     };
     const events = {
         "click .ovenplayer" : function(event, $current, template){
 
             if(api){
                 api.trigger(PLAYER_CLICKED, event);
-            }
-
-            if(contextPanel){
-                event.preventDefault();
-                contextPanel.destroy();
-                contextPanel = null;
-                return false;
             }
 
             if(!(LA$(event.target).closest(".op-controls-container") || LA$(event.target).closest(".op-setting-panel")  )){
@@ -291,14 +271,6 @@ const View = function($container){
                     break;
             }
 
-        },
-        "contextmenu .ovenplayer" : function(event, $current, template){
-            event.stopPropagation();
-            if(!LA$(event.currentTarget).find("object")){
-                event.preventDefault();
-                createContextPanel(event.pageX, event.pageY);
-                return false;
-            }
         }
     };
 
@@ -311,32 +283,8 @@ const View = function($container){
     that.setApi = (playerInstance) => {
         api = playerInstance;
 
-        api.on(READY, function(data) {
-
-            if(!controls && showControlBar){
-                controls = Controls($playerRoot.find(".op-ui"), playerInstance);
-            }
-        });
-
-        api.on(ERROR, function(error) {
-            if(api){
-                let sources = api.getSources()||[];
-                if(controls && (sources.length <= 1)){
-                    // controls.destroy();
-                    // controls = null;
-                }
-            }
-
-        });
-
         api.on(DESTROY, function(data) {
             viewTemplate.destroy();
-        });
-
-        api.on(PLAYER_PLAY, function (data) {
-            if(!controls && showControlBar){
-                controls = Controls($playerRoot.find(".op-ui"), playerInstance);
-            }
         });
 
         api.on(PLAYER_STATE, function(data){
@@ -350,20 +298,7 @@ const View = function($container){
             }
         });
 
-        let showControlBar = api.getConfig() && api.getConfig().controls;
-
         helper = Helpers($playerRoot.find(".op-ui"), playerInstance);
-        if(showControlBar){
-            controls = Controls($playerRoot.find(".op-ui"), playerInstance);
-        } else {
-
-            // to use full screen api
-            if (api.getConfig() && api.getConfig().expandFullScreenUI) {
-                controls = Controls($playerRoot.find(".op-ui"), playerInstance);
-                controls.destroy();
-            }
-        }
-
         let aspectRatio = api.getConfig().aspectRatio;
 
         if (aspectRatio) {

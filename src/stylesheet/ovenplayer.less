@@ -177,9 +177,6 @@
     .op-progressbar-container, .op-controls .op-button{
       cursor: none;
     }
-    .op-caption-text-container {
-      bottom: 25px;
-    }
   }
 
   .op-ratio {
@@ -257,77 +254,6 @@
     .op-controls-container{}
     .op-helpers-container{}
   }
-}
-.op-ads{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  padding-bottom : 34px;
-  //pointer-events: none;
-  top:0;
-  &>div{
-    position: absolute !important;
-    width: 100% !important;
-    height: 100% !important;
-    iframe{
-      pointer-events :auto;
-    }
-  }
-
-  video.op-ads-vast-video{
-    background-color: rgb(0, 0, 0);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 1;
-  }
-
-  .op-ads-button{
-    bottom: 36px;
-    cursor: default;
-    margin-right: 4px;
-    pointer-events: auto;
-    position: absolute;
-    right: 0;
-    z-index: 1;
-    width: auto !important;
-    height: auto !important;
-    border-radius: 4px;
-    background-color: rgba(18, 18, 28, 0.7);
-    min-width: 155px;
-    display: none;
-
-    .op-ads-textview{
-      color: #e6e6e6;
-      //font-family: arial,sans-serif;
-      font-weight: normal;
-      font-size: 11px;
-      padding: 6px 12px;
-      text-align: center;
-      display: inline-block;
-      width: 100%;
-      vertical-align: middle;
-    }
-    .videoAdUiAction {
-      padding: 8px 24px;
-      cursor: pointer;
-      direction: ltr;
-      font-weight: normal;
-      font-size: 20px;
-      border : 1px solid rgba(255,255,255,0.5);
-      &:hover{
-        border-radius: 4px;
-        border : 1px solid rgba(255,255,255,1);
-      }
-      i{
-        display: inline-block;
-        width : auto;
-      }
-    }
-  }
-
 }
 
 /**
@@ -795,164 +721,6 @@ i.op-con{
   }
 }
 
-
-
-/**
- * @brief   Controls (container)
- * */
-
-.op-controls-container{
-   display: none;
-  .op-bottom-panel {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    width : 100%;
-    z-index : 5;
-    .op-gradient-bottom {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(18, 18, 18, 0.5);
-      pointer-events: none;
-      /*-moz-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
-      -webkit-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
-      transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);*/
-    }
-    -webkit-animation-name: op-slideInUp;
-    animation-name: op-slideInUp;
-
-    -webkit-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-
-    .op-progressbar-container {
-      display: block;
-      position: relative;
-      width: 100%;
-      height: 4px;
-      cursor: pointer;
-      bottom: 50px;
-
-      &.op-progressbar-container-disabled {
-        cursor: default;
-      }
-
-      .op-progressbar-padding {
-        position: absolute;
-        width: 100%;
-        height: 15px;
-        bottom: -5px;
-      }
-    }
-
-
-    /*contols container*/
-    .op-controls {
-      position: relative;
-      width: 100%;
-      height: 50px;
-      text-align: left;
-      overflow: hidden;
-
-      &:after{
-        content: '';
-        clear: both;
-      }
-      .op-setting-button {
-        position: relative;
-        margin-right: 12px;
-      }
-      .op-playlist-button {
-        position: relative;
-        margin-right: 12px;
-      }
-
-      .op-navigators{
-        float : left;
-        height: 30px;
-        line-height: 30px;
-      }
-      .op-left-controls {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 14px 0 10px 0;
-        &:after{
-          content: '';
-          clear: both;
-        }
-      }
-      .op-right-controls {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 14px 0 10px 0;
-        &:after{
-          content: '';
-          clear: both;
-        }
-      }
-
-      /*maybe not use*/
-      .op-frame-buttons {
-        position: relative;
-        display: inline-block;
-        margin-left: 14px;
-        overflow: hidden;
-        font-weight: 100;
-        height: 30px;
-
-        .op-frame-button{
-          margin-right: 6px;
-          position: relative;
-          text-align: center;
-          color : #fff;
-          .frame-icon{
-            position: relative;
-
-            &.reverse{
-              &:after {
-                content: '\e900';
-              }
-            }
-            &:after {
-              font-family: 'frameIcon' !important;
-              speak: none;
-              content: '\e901';
-              font-style: normal;
-              font-weight: normal;
-              font-variant: normal;
-              text-transform: none;
-
-              /* Better Font Rendering =========== */
-              -webkit-font-smoothing: antialiased;
-              -moz-osx-font-smoothing: grayscale;
-              position: absolute;
-              font-size: 2.4em;
-              left : 0;
-              line-height:30px;
-              height:30px;
-            }
-            .btn-text{
-              font-weight: bold;
-              font-size : 0.8em;
-              line-height:30px;
-              height:30px;
-            }
-
-          }
-
-        }
-
-      }
-    }
-  }
-
-}
-
-
 /**
  * @brief   Progressbar
  * */
@@ -1374,76 +1142,16 @@ i.op-con{
 
 }
 
-
-/**
- * @brief   caption.
- * */
-
-.op-caption-viewer {
-
-  .op-caption-text-container {
-    position: absolute;
-    bottom: 60px;
-    width: 100%;
-    padding: 0 12px;
-    text-align: center;
-    -moz-transition: bottom .25s cubic-bezier(0.0,0.0,0.2,1);
-    -webkit-transition: bottom .25s cubic-bezier(0.0,0.0,0.2,1);
-    transition: bottom .25s cubic-bezier(0.0,0.0,0.2,1);
-    .op-caption-text {
-      font-size: 1em;
-      line-height: 1.2em;
-      text-shadow: 2px 2px 2px gray;
-      padding: .1em .3em;
-      user-select: none;
-      word-break: break-word;
-      white-space: pre-line;
-      border: none;
-      background: none;
-    }
-  }
-}
-
-.op-caption-button {
-  width: 36px;
-}
-
-.op-caption-button > i {
-  font-size: 18px;
-  -moz-transition: color .25s cubic-bezier(0.0,0.0,0.2,1);
-  -webkit-transition: color .25s cubic-bezier(0.0,0.0,0.2,1);
-  transition: color .25s cubic-bezier(0.0,0.0,0.2,1);
-}
-
-.op-caption-active .op-caption-button > i {
-  color: #F36446;
-}
-
-
-
 /*Responsive  */
 
 .op-wrapper.ovenplayer.large{
   font-size : 14px;
-  .op-caption-text{
-    font-size : 2em;
-    line-height : 2em;
-  }
-
 }
 .op-wrapper.ovenplayer.medium{
   font-size : 12px;
-  .op-caption-text{
-    font-size : 1.4em;
-    line-height : 1.4em;
-  }
 }
 .op-wrapper.ovenplayer.small{
   font-size : 10px;
-  .op-caption-text{
-    font-size : 1.4em;
-    line-height : 1.4em;
-  }
   .op-playlist{
     padding : 1rem;
     .op-playlist-card{
@@ -1464,10 +1172,6 @@ i.op-con{
     }
   }
 
-  .op-caption-text{
-    font-size : 1.4em;
-    line-height : 1.4em;
-  }
   .op-playlist{
     padding : 1rem;
     .op-playlist-header{
@@ -1499,13 +1203,6 @@ i.op-con{
           line-height : 40px;
         }
       }
-    }
-  }
-  .op-ads-button{
-    bottom: 22px;
-    .videoAdUiAction{
-      padding: 4px;
-      font-size: 14px;
     }
   }
 }
@@ -1540,10 +1237,6 @@ i.op-con{
         padding : 0;
       }
     }
-  }
-  .op-ads{
-    top: 0;
-    bottom : 0;
   }
 
   .op-button{

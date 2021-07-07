@@ -1,8 +1,6 @@
 /**
  * Created by hoho on 2018. 6. 27..
  */
-import Ima from "api/ads/ima/Ad";
-import Vast from "api/ads/vast/Ad";
 import EventEmitter from "api/EventEmitter";
 import EventsListener from "api/provider/html5/Listener";
 import {extractVideoElement, pickCurrentSource} from "api/provider/utils";
@@ -10,10 +8,9 @@ import {
     WARN_MSG_MUTEDPLAY,
     UI_ICONS, PLAYER_WARNING,
     STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE, STATE_ERROR,
-    PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY, STATE_AD_PLAYING, STATE_AD_PAUSED,
-    CONTENT_TIME, CONTENT_CAPTION_CUE_CHANGED, CONTENT_SOURCE_CHANGED,
-    AD_CLIENT_GOOGLEIMA, AD_CLIENT_VAST,
-    PLAYBACK_RATE_CHANGED, CONTENT_MUTE, PROVIDER_HTML5, PROVIDER_WEBRTC, PROVIDER_DASH, PROVIDER_HLS
+    PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
+    CONTENT_TIME, CONTENT_SOURCE_CHANGED,
+    PLAYBACK_RATE_CHANGED, CONTENT_MUTE, PROVIDER_HTML5, PROVIDER_WEBRTC
 } from "api/constants";
 
 /**
@@ -28,27 +25,12 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
     let that ={};
     EventEmitter(that);
 
-    let dashAttachedView = false;
-
     let elVideo = spec.element;
-    let ads = null, listener = null, videoEndedCallback = null;
+    let listener = null, videoEndedCallback = null;
 
     let isPlayingProcessing = false;
 
-    if(spec.adTagUrl){
-        OvenPlayerConsole.log("[Provider] Ad Client - ", playerConfig.getAdClient());
-        if(playerConfig.getAdClient() === AD_CLIENT_VAST){
-            ads = Vast(elVideo, that, playerConfig, spec.adTagUrl);
-        }else{
-            ads = Ima(elVideo, that, playerConfig, spec.adTagUrl);
-        }
-
-        if(!ads){
-            console.log("Can not load due to google ima for Ads.");
-        }
-    }
-
-    listener = EventsListener(elVideo, that, ads ? ads.videoEndedCallback : null, playerConfig);
+    listener = EventsListener(elVideo, that, null, playerConfig);
     elVideo.playbackRate = elVideo.defaultPlaybackRate = playerConfig.getPlaybackRate();
 
     const _load = (lastPlayPosition) =>{
@@ -145,26 +127,6 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
             OvenPlayerConsole.log("Provider : setState()", newState);
 
-            //ToDo : This is temporary code. If main video occur error, player avoid error message on ad playing.
-            if(prevState === STATE_AD_PLAYING && (newState === STATE_ERROR || newState === STATE_IDLE) ){
-                return false;
-            }
-
-            /*
-             * 2019-06-13
-             * No more necessary this codes.
-             * Checking the autoPlay support was using main video element. elVideo.play() -> yes or no??
-             * And then that causes triggering play and pause event.
-             * And that checking waits for elVideo loaded. Dash load completion time is unknown.
-             * Then I changed check method. I make temporary video tag and insert empty video.
-             * */
-            //if ((prevState === STATE_AD_PLAYING || prevState === STATE_AD_PAUSED ) && (newState === STATE_PAUSED || newState === STATE_PLAYING)) {
-            //    return false;
-            //Ads checks checkAutoplaySupport(). It calls real play() and pause() to video element.
-            //And then that triggers "playing" and "pause".
-            //I prevent these process.
-            //}
-
             OvenPlayerConsole.log("Provider : triggerSatatus", newState);
 
             switch (newState) {
@@ -177,21 +139,10 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
                         newstate: STATE_PAUSED
                     });
                     break;
-                case STATE_AD_PAUSED :
-                    that.trigger(PLAYER_PAUSE, {
-                        prevState: spec.state,
-                        newstate: STATE_AD_PAUSED
-                    });
-                    break;
                 case STATE_PLAYING :
                     that.trigger(PLAYER_PLAY, {
                         prevState: spec.state,
                         newstate: STATE_PLAYING
-                    });
-                case STATE_AD_PLAYING :
-                    that.trigger(PLAYER_PLAY, {
-                        prevState: spec.state,
-                        newstate: STATE_AD_PLAYING
                     });
                     break;
             }
@@ -308,52 +259,37 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
         isPlayingProcessing = true;
         if(that.getState() !== STATE_PLAYING){
-            if (  (ads && ads.isActive()) || (ads && !ads.started()) ) {
-                ads.play().then(_ => {
-                    //ads play success
+            let promise = elVideo.play();
+            if (promise !== undefined) {
+                promise.then(function(){
                     isPlayingProcessing = false;
-                    OvenPlayerConsole.log("Provider : ads play success");
-
+                    OvenPlayerConsole.log("Provider : video play success");
+                    /*
+                    if(mutedPlay){
+                        that.trigger(PLAYER_WARNING, {
+                            message : WARN_MSG_MUTEDPLAY,
+                            timer : 10 * 1000,
+                            iconClass : UI_ICONS.volume_mute,
+                            onClickCallback : function(){
+                                that.setMute(false);
+                            }
+                        });
+                    }*/
                 }).catch(error => {
-                    //ads play fail maybe cause user interactive less
+                    OvenPlayerConsole.log("Provider : video play error", error.message);
+
                     isPlayingProcessing = false;
-                    OvenPlayerConsole.log("Provider : ads play fail", error);
+                    /*
+                    if(!mutedPlay){
+                        that.setMute(true);
+                        that.play(true);
+                    }
+                    */
                 });
-
             }else{
-                let promise = elVideo.play();
-                if (promise !== undefined) {
-                    promise.then(function(){
-                        isPlayingProcessing = false;
-                        OvenPlayerConsole.log("Provider : video play success");
-                        /*
-                        if(mutedPlay){
-                            that.trigger(PLAYER_WARNING, {
-                                message : WARN_MSG_MUTEDPLAY,
-                                timer : 10 * 1000,
-                                iconClass : UI_ICONS.volume_mute,
-                                onClickCallback : function(){
-                                    that.setMute(false);
-                                }
-                            });
-                        }*/
-                    }).catch(error => {
-                        OvenPlayerConsole.log("Provider : video play error", error.message);
-
-                        isPlayingProcessing = false;
-                        /*
-                        if(!mutedPlay){
-                            that.setMute(true);
-                            that.play(true);
-                        }
-                        */
-                    });
-                }else{
-                    //IE promise is undefinded.
-                    OvenPlayerConsole.log("Provider : video play success (ie)");
-                    isPlayingProcessing = false;
-                }
-
+                //IE promise is undefinded.
+                OvenPlayerConsole.log("Provider : video play success (ie)");
+                isPlayingProcessing = false;
             }
 
         }
@@ -368,8 +304,6 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
         if (that.getState() === STATE_PLAYING) {
             elVideo.pause();
-        }else if(that.getState() === STATE_AD_PLAYING){
-            ads.pause();
         }
     };
     that.seek = (position) =>{
@@ -509,10 +443,6 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         listener.destroy();
         //elVideo.remove();
 
-        if(ads){
-            ads.destroy();
-            ads = null;
-        }
         that.off();
         OvenPlayerConsole.log("CORE : destroy() player stop, listener, event destroied");
     };

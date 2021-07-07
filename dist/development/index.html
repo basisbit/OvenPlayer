@@ -57,22 +57,12 @@ var player = OvenPlayer.create("player", {
 
     <script>
         const totalTestSources = [
-            {
-                type: 'mp4',
-                file:  '../OCP_480.mp4',
-                label: '360P'
-            },
-            {
-                type: 'mp4',
-                file: '../OCP_720.mp4',
-                label: '480P'
-            },
-            {
-                type: 'mp4',
-                file: '../OCP_1080.mp4',
-                label: '1080',
-                default: 'true'
-            }
+        {
+            file: 'wss://stream1.brony.eu:3334/pony/test',
+            label: 'WebRTC (2sec latency, server EU)',
+            type: 'webrtc',
+            default: true
+        },
         ];
         var player = OvenPlayer.create("player", {
             debug : true,
