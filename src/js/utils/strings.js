@@ -5,39 +5,6 @@ export function trim(string) {
 }
 
 /**
- * extractExtension
- *
- * @param      {string} path for url
- * @return     {string}  Extension
- */
-export const extractExtension = function(path) {
-    if(!path) {
-        return "";
-    }
-    function getAzureFileFormat(path) {
-        let extension = "";
-        if ((/[(,]format=mpd-/i).test(path)) {
-            extension = 'mpd';
-        }else if ((/[(,]format=m3u8-/i).test(path)) {
-            extension = 'm3u8';
-        }
-        return extension;
-    }
-
-    let azuredFormat = getAzureFileFormat(path);
-    if(azuredFormat) {
-        return azuredFormat;
-    }
-    path = path.split('?')[0].split('#')[0];
-    if(path.lastIndexOf('.') > -1) {
-        return path.substr(path.lastIndexOf('.') + 1, path.length).toLowerCase();
-    }else{
-        return "";
-    }
-};
-
-
-/**
  * naturalHms
  *
  * @param      {number | string}  second  The second

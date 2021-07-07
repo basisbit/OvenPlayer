@@ -1,7 +1,5 @@
 import _ from "utils/underscore";
-import {isWebRTC } from "utils/validator";
-import {extractExtension ,trim} from "../../utils/strings";
-import SupportChecker from "../SupportChecker";
+import {trim} from "../../utils/strings";
 import {PLAYLIST_CHANGED} from "api/constants";
 
 /**
@@ -16,7 +14,6 @@ const Manager = function(provider){
         playlist : [],
         currentIndex : 0
     };
-    let supportChecker = SupportChecker();
 
     console.log("PlaylistManager loaded.");
 
@@ -43,11 +40,7 @@ const Manager = function(provider){
             source.type = source.type.replace(mimetypeRegEx, '$1');
         }
 
-        if(isWebRTC(source.file)){
-            source.type = 'webrtc';
-        }else if (!source.type) {
-            source.type = extractExtension(source.file);
-        }
+        source.type = 'webrtc';
 
         if (source.lowLatency) {
             source.lowLatency = source.lowLatency;

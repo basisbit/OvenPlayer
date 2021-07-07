@@ -3,9 +3,8 @@
  */
 import Provider from "api/provider/html5/Provider";
 import WebRTCLoader from "api/provider/html5/providers/WebRTCLoader";
-import {isWebRTC} from "utils/validator";
 import {errorTrigger} from "api/provider/utils";
-import {PROVIDER_WEBRTC, STATE_IDLE, CONTENT_META, STATE_PLAYING} from "api/constants";
+import {PROVIDER_WEBRTC, STATE_IDLE, CONTENT_META} from "api/constants";
 
 /**
  * @brief   webrtc provider extended core.
@@ -38,39 +37,37 @@ const WebRTC = function(element, playerConfig, adTagUrl){
     };
 
     that = Provider(spec, playerConfig, function(source){
-        if(isWebRTC(source.file, source.type)){
-            console.log("WEBRTC : onBeforeLoad : ", source);
-            if(webrtcLoader){
-                webrtcLoader.destroy();
-                webrtcLoader = null;
+        console.log("WEBRTC : onBeforeLoad : ", source);
+        if(webrtcLoader){
+            webrtcLoader.destroy();
+            webrtcLoader = null;
+        }
+
+        let loadCallback = function(stream){
+
+            if (element.srcObject) {
+                element.srcObject = null;
             }
 
-            let loadCallback = function(stream){
+            element.srcObject = stream;
+        };
 
-                if (element.srcObject) {
-                    element.srcObject = null;
-                }
+        webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfig);
 
-                element.srcObject = stream;
-            };
+        webrtcLoader.connect(function(){
+            //ToDo : resolve not workring
+        }).catch(function(error){
+            //that.destroy();
+            //Do nothing
+        });
 
-            webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfig);
-
-            webrtcLoader.connect(function(){
-                //ToDo : resolve not workring
-            }).catch(function(error){
-                //that.destroy();
-                //Do nothing
-            });
-
-            that.on(CONTENT_META, function(){
-                if(playerConfig.isAutoStart()){
-                    // if (that.getState() !== 'error') {
-                    //     that.play();
-                    // }
-                }
-            }, that);
-        }
+        that.on(CONTENT_META, function(){
+            if(playerConfig.isAutoStart()){
+                // if (that.getState() !== 'error') {
+                //     that.play();
+                // }
+            }
+        }, that);
     });
     superDestroy_func = that.super('destroy');
 

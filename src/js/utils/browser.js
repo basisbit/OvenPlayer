@@ -45,7 +45,6 @@ export const analUserAgent = function(){
     let browser = navigator.appName;
     let version = '' + parseFloat(navigator.appVersion);
     let majorVersion = parseInt(navigator.appVersion, 10);
-    let isWebview = false;
     let nameOffset, verOffset, ix;
 
     // Opera

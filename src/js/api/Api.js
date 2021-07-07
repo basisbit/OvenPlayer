@@ -4,12 +4,10 @@ import LazyCommandExecutor from "api/LazyCommandExecutor";
 import MediaManager from "api/media/Manager";
 import PlaylistManager from "api/playlist/Manager";
 import ProviderController from "api/provider/Controller";
-import {READY, ERRORS, ERROR, CONTENT_TIME_MODE_CHANGED, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_PLAY, NETWORK_UNSTABLED, PLAYER_WEBRTC_NETWORK_SLOW, PLAYER_WEBRTC_UNEXPECTED_DISCONNECT, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR,
-    PLAYER_FILE_ERROR, PROVIDER_WEBRTC, ALL_PLAYLIST_ENDED} from "api/constants";
+import {READY, ERRORS, ERROR, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR,
+     ALL_PLAYLIST_ENDED} from "api/constants";
 import {version} from 'version';
 import {analUserAgent} from "utils/browser";
-import {pickCurrentSource} from "api/provider/utils";
-import LA$ from 'utils/likeA$';
 
 /**
  * @brief   This object connects UI to the provider.

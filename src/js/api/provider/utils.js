@@ -34,27 +34,3 @@ export const errorTrigger = function(error, provider){
     }
 
 };
-
-export const pickCurrentSource = (sources, playerConfig) => {
-
-    let sourceIndex = 0;
-
-    if (sources) {
-
-        if (playerConfig.getSourceIndex() === -1) {
-
-            for (var i = 0; i < sources.length; i++) {
-                if (sources[i].default) {
-                    sourceIndex = i;
-                    break;
-                }
-            }
-        } else {
-
-            sourceIndex = playerConfig.getSourceIndex();
-        }
-
-    }
-
-    return sourceIndex;
-}

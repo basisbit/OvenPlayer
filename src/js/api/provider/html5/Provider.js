@@ -3,14 +3,10 @@
  */
 import EventEmitter from "api/EventEmitter";
 import EventsListener from "api/provider/html5/Listener";
-import {extractVideoElement, pickCurrentSource} from "api/provider/utils";
 import {
-    WARN_MSG_MUTEDPLAY,
-    UI_ICONS, PLAYER_WARNING,
-    STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE, STATE_ERROR,
+    STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE,
     PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
-    CONTENT_TIME, CONTENT_SOURCE_CHANGED,
-    PLAYBACK_RATE_CHANGED, CONTENT_MUTE, PROVIDER_WEBRTC
+    CONTENT_SOURCE_CHANGED, PLAYBACK_RATE_CHANGED, CONTENT_MUTE
 } from "api/constants";
 
 /**
@@ -26,7 +22,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
     EventEmitter(that);
 
     let elVideo = spec.element;
-    let listener = null, videoEndedCallback = null;
+    let listener = null;
 
     let isPlayingProcessing = false;
 
@@ -222,7 +218,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
         spec.sources = sources;
 
-        spec.currentSource = pickCurrentSource(sources, playerConfig);
+        spec.currentSource = 0;
         _load(lastPlayPosition || 0);
 
         return new Promise(function (resolve, reject) {
@@ -241,7 +237,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
     that.load = (sources) =>{
 
         spec.sources = sources;
-        spec.currentSource = pickCurrentSource(sources, playerConfig);
+        spec.currentSource = 0;
         _load(0);
     };
 

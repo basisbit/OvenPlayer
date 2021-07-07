@@ -9,7 +9,6 @@ import {
     STATE_AD_PLAYING,
     STATE_PAUSED,
     STATE_ERROR,
-    CONTENT_COMPLETE,
     CONTENT_SEEK,
     CONTENT_BUFFER_FULL,
     CONTENT_SEEKED,
@@ -22,10 +21,9 @@ import {
     PLAYER_UNKNWON_OPERATION_ERROR,
     PLAYER_UNKNWON_NETWORK_ERROR,
     PLAYER_UNKNWON_DECODE_ERROR,
-    PLAYER_FILE_ERROR,
-    PROVIDER_WEBRTC
+    PLAYER_FILE_ERROR
 } from "api/constants";
-import {extractVideoElement, errorTrigger} from "api/provider/utils";
+import {errorTrigger} from "api/provider/utils";
 
 /**
  * @brief   Trigger on various video events.

@@ -3,12 +3,7 @@
  * @param   {element}   container   dom element
  *
  * */
-import {getBrowser} from "utils/browser";
-import {PROVIDER_WEBRTC} from "api/constants";
 import LA$ from "utils/likeA$.js";
-import {getScriptPath} from 'utils/webpack';
-import {version} from 'version';
-//ToDo : Restructuring
 
 const Manager = function(container, browserInfo){
     const that = {};

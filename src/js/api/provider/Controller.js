@@ -1,14 +1,10 @@
-import SupportChecker from "api/SupportChecker";
-import {
-    PROVIDER_WEBRTC, ERRORS, INIT_UNSUPPORT_ERROR
-} from "api/constants";
+import {PROVIDER_WEBRTC} from "api/constants";
 
 /**
  * @brief   This manages provider.
  * @param
  * */
 const Controller = function () {
-    let supportChacker = SupportChecker();
     const Providers = {};
 
     const that = {};

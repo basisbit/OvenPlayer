@@ -1,7 +1,5 @@
 import API from 'api/Api';
-import {isWebRTC} from 'utils/validator';
 import _ from 'utils/underscore';
-import La$ from 'utils/likeA$';
 import {getScriptPath} from 'utils/webpack';
 
 
@@ -128,7 +126,7 @@ OvenPlayerSDK.removePlayer = function(playerId) {
  */
 OvenPlayerSDK.generateWebrtcUrls = function(sources) {
     return (_.isArray(sources) ? sources : [sources]).map(function(source, index){
-        if(source.host && isWebRTC(source.host) && source.application && source.stream){
+        if(source.host && source.application && source.stream){
             return {file : source.host + "/" + source.application + "/" + source.stream, type : "webrtc", label : source.label ? source.label : "webrtc-"+(index+1) };
         }
     });
