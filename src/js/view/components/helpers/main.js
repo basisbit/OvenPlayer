@@ -3,7 +3,6 @@
  */
 import OvenTemplate from "view/engine/OvenTemplate";
 import BigButton from "view/components/helpers/bigButton";
-import Thumbnail from "view/components/helpers/thumbnail";
 import Spinner from "view/components/helpers/spinner";
 import {
     READY,
@@ -26,9 +25,8 @@ import {
 
 const Helpers = function($container, api){
     let firstRun = false;
-    let bigButton = "",  spinner = "", thumbnail;
+    let bigButton = "",  spinner = "";
     let mutedMessage = null;
-    let hasThumbnail = api.getConfig().image || api.getConfig().title;
     let dont_show_message = false;
 
     const onRendered = function($current, template){
@@ -45,20 +43,10 @@ const Helpers = function($container, api){
 
             bigButton = BigButton($current, api, state);
         }
-        function createThumbnail(){
-            if(thumbnail){
-                thumbnail.destroy();
-            }
-            thumbnail = Thumbnail($current, api, api.getConfig());
-        }
 
         spinner = Spinner($current, api);
 
         api.on(READY, function() {
-            if(hasThumbnail){
-                createThumbnail();  //shows when playlist changed.
-            }
-
             if (!firstRun) {
 
                 createBigButton(STATE_PAUSED);
@@ -93,9 +81,6 @@ const Helpers = function($container, api){
 
                     if (bigButton) {
                         bigButton.destroy();
-                    }
-                    if(thumbnail){
-                        thumbnail.destroy();
                     }
 
                     if(!qualityLevelChanging){
@@ -185,12 +170,6 @@ const Helpers = function($container, api){
             }
 
             console.log(message);
-        }, template);
-
-        api.on(ALL_PLAYLIST_ENDED, function(){
-            if(hasThumbnail){
-                createThumbnail();
-            }
         }, template);
     };
     const onDestroyed = function(template){

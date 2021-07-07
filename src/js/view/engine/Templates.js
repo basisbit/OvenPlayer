@@ -5,7 +5,6 @@ import TextViewTemplate from 'view/example/textviewTemplate';
 import ViewTemplate from 'view/viewTemplate';
 import HelpersTemplate from 'view/components/helpers/mainTemplate';
 import BigButtonTemplate from 'view/components/helpers/bigButtonTemplate';
-import ThumbnailTemplate from 'view/components/helpers/thumbnailTemplate';
 import SpinnerTemplate from 'view/components/helpers/spinnerTemplate';
 
 
@@ -14,7 +13,6 @@ const Templates = {
     ViewTemplate,
     HelpersTemplate,
     BigButtonTemplate,
-    ThumbnailTemplate,
     SpinnerTemplate
 };
 
