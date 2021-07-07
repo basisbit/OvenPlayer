@@ -10,7 +10,7 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
     let undecoratedMethods = {};
     let executeMode = false;
     let that = {};
-    OvenPlayerConsole.log("LazyCommandExecutor loaded.");
+    console.log("LazyCommandExecutor loaded.");
     queuedCommands.forEach((command) => {
         const method = instance[command];
         undecoratedMethods[command] = method || function(){};
@@ -37,31 +37,31 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
 
     that.setExecuteMode = (mode) => {
         executeMode = mode;
-        OvenPlayerConsole.log("LazyCommandExecutor : setExecuteMode()", mode);
+        console.log("LazyCommandExecutor : setExecuteMode()", mode);
     };
     that.getUndecoratedMethods = function(){
-        OvenPlayerConsole.log("LazyCommandExecutor : getUndecoratedMethods()", undecoratedMethods);
+        console.log("LazyCommandExecutor : getUndecoratedMethods()", undecoratedMethods);
         return undecoratedMethods;
     }
     that.getQueue = function(){
-        OvenPlayerConsole.log("LazyCommandExecutor : getQueue()", getQueue);
+        console.log("LazyCommandExecutor : getQueue()", getQueue);
         return commandQueue;
     }
     that.addQueue = function(command, args){
-        OvenPlayerConsole.log("LazyCommandExecutor : addQueue()", command, args);
+        console.log("LazyCommandExecutor : addQueue()", command, args);
         commandQueue.push({ command, args });
     }
 
     that.flush = function(){
-        OvenPlayerConsole.log("LazyCommandExecutor : flush()");
+        console.log("LazyCommandExecutor : flush()");
         executeQueuedCommands();
     };
     that.empty = function() {
-        OvenPlayerConsole.log("LazyCommandExecutor : empty()");
+        console.log("LazyCommandExecutor : empty()");
         commandQueue.length = 0;
     };
     that.off = function() {
-        OvenPlayerConsole.log("LazyCommandExecutor : off()");
+        console.log("LazyCommandExecutor : off()");
         queuedCommands.forEach((command) => {
             const method = undecoratedMethods[command];
             if (method) {
@@ -75,12 +75,12 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
     //Run once at the end
     that.removeAndExcuteOnce = function(command_){
         let commandQueueItem = _.findWhere(commandQueue, {command : command_});
-        OvenPlayerConsole.log("LazyCommandExecutor : removeAndExcuteOnce()", command_);
+        console.log("LazyCommandExecutor : removeAndExcuteOnce()", command_);
         commandQueue.splice(_.findIndex(commandQueue, {command : command_}), 1);
 
         const method = undecoratedMethods[command_];
         if (method) {
-            OvenPlayerConsole.log("removeCommand()");
+            console.log("removeCommand()");
             if(commandQueueItem){
                 (method|| instance[command_]).apply(instance, commandQueueItem.args);
             }
@@ -90,7 +90,7 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
     };
 
     that.destroy = function() {
-        OvenPlayerConsole.log("LazyCommandExecutor : destroy()");
+        console.log("LazyCommandExecutor : destroy()");
         that.off();
         that.empty();
     };

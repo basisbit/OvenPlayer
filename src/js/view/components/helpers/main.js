@@ -227,7 +227,7 @@ const Helpers = function($container, api){
             }  else {
                 message = "Can not play due to unknown reasons.";
             }
-            OvenPlayerConsole.log("error occured : ", error);
+            console.log("error occured : ", error);
 
             createMessage(message, description, null, UI_ICONS.op_warning , null, true);
         }, template);
@@ -240,7 +240,7 @@ const Helpers = function($container, api){
                 message = "Network connection is unstable. Check the network connection.";
             }
 
-            OvenPlayerConsole.log(message);
+            console.log(message);
             //createMessage(message, null,5000);
         }, template);
 

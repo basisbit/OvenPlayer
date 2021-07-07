@@ -4,7 +4,7 @@
  *
  * */
 import {getBrowser} from "utils/browser";
-import {PROVIDER_WEBRTC, PROVIDER_HTML5} from "api/constants";
+import {PROVIDER_WEBRTC} from "api/constants";
 import LA$ from "utils/likeA$.js";
 import {getScriptPath} from 'utils/webpack';
 import {version} from 'version';
@@ -16,7 +16,7 @@ const Manager = function(container, browserInfo){
     let $container = LA$(container);
     let videoElement = "";
 
-    OvenPlayerConsole.log("MediaManager loaded. browser : ", browserInfo );
+    console.log("MediaManager loaded. browser : ", browserInfo );
 
     const createHtmlVideo = function(isLoop, isAutoStart){
 
@@ -36,15 +36,6 @@ const Manager = function(container, browserInfo){
     };
 
     that.createMedia = (providerName , playerConfig)  => {
-        // if(videoElement){
-        //     // that.empty();
-        //     //reuse video element.
-        //     //because playlist is auto next playing.
-        //     //Only same video element does not require User Interaction Error.
-        //     return videoElement;
-        // }else{
-        //     return createHtmlVideo(playerConfig.isLoop(), playerConfig.isAutoStart());
-        // }
         that.empty();
         return createHtmlVideo(playerConfig.isLoop(), playerConfig.isAutoStart());
     }
@@ -59,7 +50,7 @@ const Manager = function(container, browserInfo){
 
 
     that.empty = () =>{
-        OvenPlayerConsole.log("MediaManager removeElement()");
+        console.log("MediaManager removeElement()");
         $container.removeChild(videoElement);
         videoElement = null;
     };

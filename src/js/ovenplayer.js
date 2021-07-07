@@ -29,9 +29,9 @@ OvenPlayer.create = function (container, options) {
             warn: function() {}
         };
     }
-    if (!window.OvenPlayerConsole || Object.keys(window.OvenPlayerConsole).length === 0) {
-        window.OvenPlayerConsole = {};
-        OvenPlayerConsole['log'] = function(){};
+    if (!window.console || Object.keys(window.console).length === 0) {
+        window.console = {};
+        console['log'] = function(){};
     }
 
 

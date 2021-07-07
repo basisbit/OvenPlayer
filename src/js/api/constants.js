@@ -17,7 +17,6 @@ export const STATE_AD_ERROR = "adError";
 export const PLAYER_AD_CLICK = "adclick";
 
 // PROVIDER
-export const PROVIDER_HTML5 = "html5";
 export const PROVIDER_WEBRTC = "webrtc";
 
 // EVENTS

@@ -142,9 +142,9 @@ OvenPlayerSDK.generateWebrtcUrls = function(sources) {
  */
 OvenPlayerSDK.debug = function(isDebugMode) {
     if(isDebugMode){
-        window.OvenPlayerConsole = {log : window['console']['log']};
+        window.console = {log : window['console']['log']};
     }else{
-        window.OvenPlayerConsole = {log :  function(){}};
+        window.console = {log :  function(){}};
     }
     return isDebugMode;
 };

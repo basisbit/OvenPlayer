@@ -10,7 +10,7 @@ import {
     STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE, STATE_ERROR,
     PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
     CONTENT_TIME, CONTENT_SOURCE_CHANGED,
-    PLAYBACK_RATE_CHANGED, CONTENT_MUTE, PROVIDER_HTML5, PROVIDER_WEBRTC
+    PLAYBACK_RATE_CHANGED, CONTENT_MUTE, PROVIDER_WEBRTC
 } from "api/constants";
 
 /**
@@ -20,7 +20,7 @@ import {
  * @param   onExtendedLoad on load handler
  * */
 const Provider = function (spec, playerConfig, onExtendedLoad){
-    OvenPlayerConsole.log("[Provider] loaded. ");
+    console.log("[Provider] loaded. ");
 
     let that ={};
     EventEmitter(that);
@@ -49,7 +49,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
         }else{
 
-            OvenPlayerConsole.log("source loaded : ", source, "lastPlayPosition : "+ lastPlayPosition);
+            console.log("source loaded : ", source, "lastPlayPosition : "+ lastPlayPosition);
 
             let previousSource = elVideo.src;
 
@@ -125,9 +125,9 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         if(spec.state !== newState){
             let prevState = spec.state;
 
-            OvenPlayerConsole.log("Provider : setState()", newState);
+            console.log("Provider : setState()", newState);
 
-            OvenPlayerConsole.log("Provider : triggerSatatus", newState);
+            console.log("Provider : triggerSatatus", newState);
 
             switch (newState) {
                 case STATE_COMPLETE :
@@ -247,7 +247,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
     that.play = () =>{
 
-        OvenPlayerConsole.log("Provider : play()");
+        console.log("Provider : play()");
         if(!elVideo){
             return false;
         }
@@ -263,7 +263,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
             if (promise !== undefined) {
                 promise.then(function(){
                     isPlayingProcessing = false;
-                    OvenPlayerConsole.log("Provider : video play success");
+                    console.log("Provider : video play success");
                     /*
                     if(mutedPlay){
                         that.trigger(PLAYER_WARNING, {
@@ -276,7 +276,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
                         });
                     }*/
                 }).catch(error => {
-                    OvenPlayerConsole.log("Provider : video play error", error.message);
+                    console.log("Provider : video play error", error.message);
 
                     isPlayingProcessing = false;
                     /*
@@ -288,7 +288,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
                 });
             }else{
                 //IE promise is undefinded.
-                OvenPlayerConsole.log("Provider : video play success (ie)");
+                console.log("Provider : video play success (ie)");
                 isPlayingProcessing = false;
             }
 
@@ -297,7 +297,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
     };
     that.pause = () =>{
 
-        OvenPlayerConsole.log("Provider : pause()");
+        console.log("Provider : pause()");
         if(!elVideo){
             return false;
         }
@@ -359,7 +359,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
             if(spec.sources && spec.sources.length > sourceIndex){
                 //that.pause();
                 //that.setState(STATE_IDLE);
-                OvenPlayerConsole.log("source changed : " + sourceIndex);
+                console.log("source changed : " + sourceIndex);
                 spec.currentSource = sourceIndex;
 
                 that.trigger(CONTENT_SOURCE_CHANGED, {
@@ -422,7 +422,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         if(!elVideo){
             return false;
         }
-        OvenPlayerConsole.log("CORE : stop() ");
+        console.log("CORE : stop() ");
 
         elVideo.removeAttribute('preload');
         elVideo.removeAttribute('src');
@@ -444,7 +444,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         //elVideo.remove();
 
         that.off();
-        OvenPlayerConsole.log("CORE : destroy() player stop, listener, event destroied");
+        console.log("CORE : destroy() player stop, listener, event destroied");
     };
 
     //XXX : I hope using es6 classes. but I think to occur problem from Old IE. Then I choice function inherit. Finally using super function is so difficult.

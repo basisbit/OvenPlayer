@@ -41,7 +41,6 @@ const defaultConfig = {
     },
     entry: {
         'ovenplayer': './src/js/ovenplayer.js',
-        'ovenplayer.sdk' : './src/js/ovenplayer.sdk.js',
 
     },
     resolve: {
@@ -150,7 +149,6 @@ const extendConfig = function (){
             output: {
                 filename: `[name].js`,
                 hashDigestLength: 7,
-                chunkFilename: `ovenplayer-[chunkhash].js`,
                 path: path.resolve(__dirname, 'dist/production/ovenplayer')
             },
             plugins: [
