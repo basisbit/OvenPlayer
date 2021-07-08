@@ -17,7 +17,7 @@ const defaultConfig = {
     },
     entry: {
         'ovenplayer': './src/js/ovenplayer.js',
-
+        'WebRTC': './src/js/api/provider/html5/providers/WebRTC.js',
     },
     resolve: {
         modules: [
