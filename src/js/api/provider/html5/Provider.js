@@ -6,7 +6,7 @@ import EventsListener from "api/provider/html5/Listener";
 import {
     STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE,
     PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
-    CONTENT_SOURCE_CHANGED, PLAYBACK_RATE_CHANGED, CONTENT_MUTE
+    CONTENT_SOURCE_CHANGED, CONTENT_MUTE
 } from "api/constants";
 
 /**
@@ -27,7 +27,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
     let isPlayingProcessing = false;
 
     listener = EventsListener(elVideo, that, null, playerConfig);
-    elVideo.playbackRate = elVideo.defaultPlaybackRate = playerConfig.getPlaybackRate();
+    elVideo.playbackRate = 1;
 
     const _load = (lastPlayPosition) =>{
 
@@ -307,19 +307,6 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
             return false;
         }
         elVideo.currentTime = position;
-    };
-    that.setPlaybackRate = (playbackRate) =>{
-        if(!elVideo){
-            return false;
-        }
-        that.trigger(PLAYBACK_RATE_CHANGED, {playbackRate : playbackRate});
-        return elVideo.playbackRate = elVideo.defaultPlaybackRate = playbackRate;
-    };
-    that.getPlaybackRate = () =>{
-        if(!elVideo){
-            return 0;
-        }
-        return elVideo.playbackRate;
     };
 
     that.getSources = () => {

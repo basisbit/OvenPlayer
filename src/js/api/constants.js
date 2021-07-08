@@ -58,7 +58,6 @@ export const CONTENT_META = "metaChanged";
 export const CONTENT_SOURCE_CHANGED = "sourceChanged";
 export const CONTENT_LEVEL_CHANGED = "qualityLevelChanged";
 export const CONTENT_DURATION_CHANGED = "durationChanged";
-export const PLAYBACK_RATE_CHANGED = "playbackRateChanged";
 export const CONTENT_TIME_MODE_CHANGED = "timeDisplayModeChanged";
 export const OME_P2P_MODE = "p2pMode";
 
