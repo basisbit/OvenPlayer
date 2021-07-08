@@ -32,7 +32,7 @@ import {errorTrigger} from "api/provider/utils";
  * */
 
 
-const Listener = function(element, provider, videoEndedCallback, playerConfig){
+const Listener = function(element, provider, videoEndedCallback, playerConfigObj){
     const lowLevelEvents = {};
 
     console.log("EventListener loaded.",element ,provider );
@@ -132,8 +132,8 @@ const Listener = function(element, provider, videoEndedCallback, playerConfig){
 
     lowLevelEvents.loadstart = () => {
 
-        if (playerConfig) {
-            if (!playerConfig.getConfig().showBigPlayButton && playerConfig.getConfig().autoStart) {
+        if (playerConfigObj) {
+            if (!playerConfigObj.showBigPlayButton && playerConfigObj.autoStart) {
                 provider.setState(STATE_LOADING);
             }
         }

@@ -12,10 +12,10 @@ import {
 /**
  * @brief   Core For Html5 Video.
  * @param   spec member value
- * @param   playerConfig  player config
+ * @param   playerConfigObj  player config.getConfig object
  * @param   onExtendedLoad on load handler
  * */
-const Provider = function (spec, playerConfig, onExtendedLoad){
+const Provider = function (spec, playerConfigObj, onExtendedLoad){
     console.log("[Provider] loaded. ");
 
     let that ={};
@@ -26,7 +26,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
     let isPlayingProcessing = false;
 
-    listener = EventsListener(elVideo, that, null, playerConfig);
+    listener = EventsListener(elVideo, that, null, playerConfigObj);
     elVideo.playbackRate = 1;
 
     const _load = (lastPlayPosition) =>{
@@ -34,12 +34,8 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         const source =  spec.sources[spec.currentSource];
         spec.framerate = source.framerate;
 
-        that.setVolume(playerConfig.getVolume());
+        that.setVolume(100);
 
-        if(!spec.framerate){
-            //init timecode mode
-            playerConfig.setTimecodeMode(true);
-        }
         if(onExtendedLoad){
             onExtendedLoad(source, lastPlayPosition);
 
@@ -75,19 +71,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
 
             if(lastPlayPosition > 0){
                 that.seek(lastPlayPosition);
-                if(!playerConfig.isAutoStart()){
-                    // that.play();
-                }
-
             }
-
-            if(playerConfig.isAutoStart()){
-
-                // that.play();
-            }
-            /*that.trigger(CONTENT_SOURCE_CHANGED, {
-                currentSource: spec.currentSource
-            });*/
         }
 
     };
@@ -222,14 +206,7 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         _load(lastPlayPosition || 0);
 
         return new Promise(function (resolve, reject) {
-
-            if(playerConfig.isMute()){
-                that.setMute(true);
-            }
-            if(playerConfig.getVolume()){
-                that.setVolume(playerConfig.getVolume());
-            }
-
+            that.setVolume(100);
             resolve();
         });
 

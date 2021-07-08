@@ -9,10 +9,10 @@ import {PROVIDER_WEBRTC, STATE_IDLE, CONTENT_META} from "api/constants";
 /**
  * @brief   webrtc provider extended core.
  * @param   container player element.
- * @param   playerConfig    config.
+ * @param   playerConfigObj    config.getConfig()
  * */
 
-const WebRTC = function(element, playerConfig){
+const WebRTC = function(element, playerConfigObj){
     let that = {};
     let webrtcLoader = null;
     let superDestroy_func  = null;
@@ -35,7 +35,7 @@ const WebRTC = function(element, playerConfig){
         sources : []
     };
 
-    that = Provider(spec, playerConfig, function(source){
+    that = Provider(spec, playerConfigObj, function(source){
         console.log("WEBRTC : onBeforeLoad : ", source);
         if(webrtcLoader){
             webrtcLoader.destroy();
@@ -51,7 +51,7 @@ const WebRTC = function(element, playerConfig){
             element.srcObject = stream;
         };
 
-        webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfig.getConfig());
+        webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfigObj);
 
         webrtcLoader.connect(function(){
             //ToDo : resolve not workring
@@ -59,14 +59,6 @@ const WebRTC = function(element, playerConfig){
             //that.destroy();
             //Do nothing
         });
-
-        that.on(CONTENT_META, function(){
-            if(playerConfig.isAutoStart()){
-                // if (that.getState() !== 'error') {
-                //     that.play();
-                // }
-            }
-        }, that);
     });
     superDestroy_func = that.super('destroy');
 

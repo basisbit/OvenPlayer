@@ -69,7 +69,7 @@ const Api = function(container){
             //Init Provider.
             currentProvider =  Providers.provider(
                 mediaManager.createMedia(),
-                playerConfig
+                playerConfig.getConfig()
             );
 
             //This passes the event created by the Provider to API.
@@ -180,14 +180,6 @@ const Api = function(container){
     that.getBrowser = () => {
 
         return playerConfig.getBrowser();
-    };
-    that.setTimecodeMode = (isShow) =>{
-        console.log("API : setTimecodeMode()", isShow);
-        playerConfig.setTimecodeMode(isShow);
-    };
-    that.isTimecodeMode = () => {
-        console.log("API : isTimecodeMode()");
-        return playerConfig.isTimecodeMode();
     };
     that.getFramerate = () => {
         console.log("API : getFramerate()");

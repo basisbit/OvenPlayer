@@ -19,7 +19,6 @@ const Configurator = function(options, provider){
             loop : false,
             autoStart : false,
             autoFallback: true,
-            timecode : true,
             sourceIndex : 0,
             browser : "",
             hidePlaylistIcon : false,
@@ -137,23 +136,6 @@ const Configurator = function(options, provider){
     that.isCurrentProtocolOnly = () => {
         return spec.currentProtocolOnly;
     };
-    /*that.getSourceLabel = () => {
-        return spec.sourceLabel;
-    };
-    that.setSourceLabel = (newLabel) => {
-        spec.sourceLabel = newLabel;
-    };*/
-
-    that.setTimecodeMode = (timecode) => {
-        if(spec.timecode !== timecode){
-            spec.timecode = timecode;
-            provider.trigger(CONTENT_TIME_MODE_CHANGED, timecode);
-        }
-    };
-    that.isTimecodeMode = () => {
-        return spec.timecode;
-    };
-
     that.isMute = () =>{
         return spec.mute;
     };
