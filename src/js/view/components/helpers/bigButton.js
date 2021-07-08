@@ -30,7 +30,7 @@ const BigButton = function($container, api, playerState){
             if (currentState === STATE_IDLE || currentState === STATE_PAUSED) {
                 api.play();
             } else if (currentState === STATE_ERROR) {
-                api.setCurrentSource(api.getCurrentSource());
+                api.setCurrentSource(0);
             } else if(currentState === STATE_COMPLETE){
                 if(playlist.length === (currentPlaylistIndex+1)){
                     api.seek(0);

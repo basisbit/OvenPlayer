@@ -20,7 +20,7 @@ const Configurator = function(options, provider){
             autoStart : false,
             autoFallback: true,
             timecode : true,
-            sourceIndex : -1,
+            sourceIndex : 0,
             browser : "",
             hidePlaylistIcon : false,
             adClient : "googleima",
@@ -144,12 +144,6 @@ const Configurator = function(options, provider){
         spec.sourceLabel = newLabel;
     };*/
 
-    that.getSourceIndex = () => {
-        return spec.sourceIndex;
-    };
-    that.setSourceIndex = (index) => {
-        spec.sourceIndex = index;
-    };
     that.setTimecodeMode = (timecode) => {
         if(spec.timecode !== timecode){
             spec.timecode = timecode;

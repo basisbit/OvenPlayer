@@ -99,8 +99,7 @@ const Listener = function(element, provider, videoEndedCallback, playerConfig){
         //Fires when the browser has loaded meta data for the audio/video
 
         let sources = provider.getSources();
-        let sourceIndex = provider.getCurrentSource();
-        let type = sourceIndex > -1 ? sources[sourceIndex].type : "";
+        let type = "webrtc";
         var metadata = {
             duration: provider.isLive() ?  Infinity : elVideo.duration,
             type :type
@@ -190,14 +189,14 @@ const Listener = function(element, provider, videoEndedCallback, playerConfig){
             return;
         }
 
-        let sectionStart = provider.getSources()[provider.getCurrentSource()].sectionStart;
+        let sectionStart = provider.getSources()[0].sectionStart;
 
         if (sectionStart && position < sectionStart && provider.getState() === STATE_PLAYING) {
 
             provider.seek(sectionStart);
         }
 
-        let sectionEnd = provider.getSources()[provider.getCurrentSource()].sectionEnd;
+        let sectionEnd = provider.getSources()[0].sectionEnd;
 
         if (sectionEnd && position > sectionEnd && provider.getState() === STATE_PLAYING) {
 

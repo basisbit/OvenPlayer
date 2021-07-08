@@ -333,33 +333,17 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
             return obj;
         });
     };
-    that.getCurrentSource = () =>{
-        return spec.currentSource;
-    };
-    that.setCurrentSource = (sourceIndex, needProviderChange) => {
-
-        if(sourceIndex > -1){
-            if(spec.sources && spec.sources.length > sourceIndex){
-                //that.pause();
-                //that.setState(STATE_IDLE);
-                console.log("source changed : " + sourceIndex);
-                spec.currentSource = sourceIndex;
-
-                that.trigger(CONTENT_SOURCE_CHANGED, {
-                    currentSource: sourceIndex
-                });
-                playerConfig.setSourceIndex(sourceIndex);
-                //playerConfig.setSourceLabel(spec.sources[sourceIndex].label);
-                //spec.currentQuality = sourceIndex;
-                //that.pause();
-                that.setState(STATE_IDLE);
-                if(needProviderChange){
-                    _load(elVideo.currentTime || 0);
-                }
-                //
-                return spec.currentSource;
-            }
+    
+    that.setCurrentSource = (needProviderChange) => {
+        that.trigger(CONTENT_SOURCE_CHANGED, {
+            currentSource: 0
+        });
+        that.setState(STATE_IDLE);
+        if(needProviderChange){
+            _load(elVideo.currentTime || 0);
         }
+        //
+        return 0;
     };
 
 

@@ -34,9 +34,6 @@ const Api = function(container){
         let nextPlaylistIndex = index; // || playlistManager.getCurrentPlaylistIndex() + 1;
         let playlist = playlistManager.getPlaylist();
         let hasNextPlaylist = playlist[nextPlaylistIndex]? true : false;
-        //init source index
-        playerConfig.setSourceIndex(0);
-
         //set Golbal Volume info
         playerConfig.setVolume(currentProvider.getVolume());
 
@@ -88,19 +85,11 @@ const Api = function(container){
 
                             setTimeout(function () {
 
-                                that.setCurrentSource(that.getCurrentSource());
+                                that.setCurrentSource(0);
                             }, webrtcRetryInterval);
 
                             return;
                         }
-                    }
-
-                    if (playerConfig.getConfig().autoFallback && playerConfig.getSourceIndex() + 1 < that.getSources().length) {
-                        //this sequential has available source.
-                        that.pause();
-                        that.setCurrentSource(playerConfig.getSourceIndex() + 1);
-
-                        return;
                     }
                 }
 
@@ -302,34 +291,10 @@ const Api = function(container){
         console.log("API : getSources() ", currentProvider.getSources());
         return currentProvider.getSources();
     };
-    that.getCurrentSource = () =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : getCurrentSource() ", currentProvider.getCurrentSource());
-        return currentProvider.getCurrentSource();
-    };
     that.setCurrentSource = (index) =>{
 
         if(!currentProvider){return null;}
 
-        console.log("API : setCurrentSource() ", index);
-
-        // let sources = currentProvider.getSources();
-        // let currentSource = sources[currentProvider.getCurrentSource()];
-        // let newSource = sources[index];
-
-        // let isSameProvider = providerController.isSameProvider(currentSource, newSource);
-        // // provider.serCurrentQuality -> playerConfig setting -> load
-        // let resultSourceIndex = currentProvider.setCurrentSource(index, isSameProvider);
-        //
-        // if(!newSource){
-        //     return null;
-        // }
-        //
-        // console.log("API : setCurrentQuality() isSameProvider", isSameProvider);
-
-        let lastPlayPosition = currentProvider.getPosition();
-        playerConfig.setSourceIndex(index);
         lazyQueue = LazyCommandExecutor(that, ['play','seek']);
 
         initProvider(lastPlayPosition);

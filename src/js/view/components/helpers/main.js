@@ -165,7 +165,7 @@ const Helpers = function($container, api){
         api.on(NETWORK_UNSTABLED, function(event){
             let message = "Because the network connection is unstable, the following media source will be played.";
 
-            if(api.getCurrentSource()+1 ===  api.getQualityLevels().length){
+            if(1 ===  api.getQualityLevels().length){
                 message = "Network connection is unstable. Check the network connection.";
             }
 
