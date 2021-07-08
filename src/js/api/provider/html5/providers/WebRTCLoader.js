@@ -134,8 +134,10 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
                                 avg8Losses = _.reduce(lostPacketsArr, function (memo, num) {
                                     return memo + num;
                                 }, 0) / slotLength;
-                                console.log("Last8 LOST PACKET AVG  : " + (avg8Losses), "Current Packet LOST: " + actualPacketLost, "Total Packet Lost: " + state.packetsLost, lostPacketsArr);
-
+                                if(state.packetsLost > 0) {
+                                    console.log("Last8 LOST PACKET AVG  : " + (avg8Losses), "Current Packet LOST: " + actualPacketLost, "Total Packet Lost: " + state.packetsLost, lostPacketsArr);
+                                }
+                                
                                 if (avg8Losses > threshold) {
                                     peerConnectionInfo.status.avgMoreThanThresholdCount = peerConnectionInfo.status.avgMoreThanThresholdCount + 1;
                                     if (peerConnectionInfo.status.avgMoreThanThresholdCount >= 60) {

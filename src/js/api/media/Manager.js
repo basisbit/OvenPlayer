@@ -13,36 +13,22 @@ const Manager = function(container, browserInfo){
 
     console.log("MediaManager loaded. browser : ", browserInfo );
 
-    const createHtmlVideo = function(isLoop, isAutoStart){
+    const createHtmlVideo = function(){
 
         videoElement = document.createElement('video');
         videoElement.setAttribute('disableremoteplayback', '');
         videoElement.setAttribute('webkit-playsinline', 'true');
         videoElement.setAttribute('playsinline', 'true');
-        if(isLoop){
-            videoElement.setAttribute('loop', '');
-        }
-        if(isAutoStart) {
-            videoElement.setAttribute('autoplay', '');
-        }
+        videoElement.setAttribute('autoplay', '');
         $container.append(videoElement);
 
         return videoElement;
     };
 
-    that.createMedia = (providerName , playerConfig)  => {
+    that.createMedia = ()  => {
         that.empty();
-        return createHtmlVideo(playerConfig.isLoop(), playerConfig.isAutoStart());
+        return createHtmlVideo();
     }
-
-    that.createAdContainer = () => {
-        let adContainer = document.createElement('div');
-        adContainer.setAttribute('class', 'op-ads');
-        $container.append(adContainer);
-
-        return adContainer;
-    };
-
 
     that.empty = () =>{
         console.log("MediaManager removeElement()");

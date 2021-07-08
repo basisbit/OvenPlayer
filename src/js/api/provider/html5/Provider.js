@@ -388,15 +388,6 @@ const Provider = function (spec, playerConfig, onExtendedLoad){
         }
         return spec.currentQuality;
     };
-    that.setCurrentQuality = (qualityIndex) => {
-        //Do nothing
-    };
-    that.isAutoQuality = () => {
-        //Do nothing
-    };
-    that.setAutoQuality = (isAuto) => {
-        //Do nothing
-    };
 
     that.getFramerate = () => {
         return spec.framerate;

@@ -12,7 +12,7 @@ import {PROVIDER_WEBRTC, STATE_IDLE, CONTENT_META} from "api/constants";
  * @param   playerConfig    config.
  * */
 
-const WebRTC = function(element, playerConfig, adTagUrl){
+const WebRTC = function(element, playerConfig){
     let that = {};
     let webrtcLoader = null;
     let superDestroy_func  = null;
@@ -32,8 +32,7 @@ const WebRTC = function(element, playerConfig, adTagUrl){
         currentQuality : -1,
         currentSource : -1,
         qualityLevels : [],
-        sources : [],
-        adTagUrl : adTagUrl
+        sources : []
     };
 
     that = Provider(spec, playerConfig, function(source){

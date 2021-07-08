@@ -4,8 +4,7 @@ import LazyCommandExecutor from "api/LazyCommandExecutor";
 import MediaManager from "api/media/Manager";
 import PlaylistManager from "api/playlist/Manager";
 import ProviderController from "api/provider/Controller";
-import {READY, ERRORS, ERROR, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR,
-     ALL_PLAYLIST_ENDED} from "api/constants";
+import {READY, ERRORS, ERROR, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR, ALL_PLAYLIST_ENDED} from "api/constants";
 import {analUserAgent} from "utils/browser";
 
 /**
@@ -27,11 +26,7 @@ const Api = function(container){
     let playerConfig = "";
     let lazyQueue = "";
 
-    let webrtcRetry = false;
-    let WEBRTC_RETRY_COUNT = 3;
-    let webrtcRetryCount = WEBRTC_RETRY_COUNT;
     let webrtcRetryInterval = 1000;
-    let webrtcRetryTimer = null;
 
 
     const runNextPlaylist = function(index){
@@ -62,24 +57,6 @@ const Api = function(container){
         }
     };
     const initProvider = function(lastPlayPosition){
-        const pickQualityFromSource = (sources) =>{
-            var quality = 0;
-            if (sources) {
-                for (var i = 0; i < sources.length; i++) {
-                    if (sources[i].default) {
-                        quality = i;
-                    }
-                    if (playerConfig.getSourceIndex() === i ) {
-                        return i;
-                    }
-                    /*if (playerConfig.getSourceLabel() && sources[i].label === playerConfig.getSourceLabel() ) {
-                        return i;
-                    }*/
-                }
-            }
-            return quality;
-        };
-
         return providerController.loadProviders(playlistManager.getCurrentPlayList()).then(Providers => {
 
             if(Providers.length < 1){
@@ -91,13 +68,11 @@ const Api = function(container){
                 currentProvider = null;
             }
 
-            let providerName = "webrtc";
-            console.log("API : init() provider", providerName);
+            console.log("API : init() provider", "webrtc");
             //Init Provider.
             currentProvider =  Providers.provider(
-                mediaManager.createMedia(providerName, playerConfig),
-                playerConfig,
-                playlistManager.getCurrentAdTag()
+                mediaManager.createMedia(),
+                playerConfig
             );
 
             //This passes the event created by the Provider to API.
@@ -208,22 +183,6 @@ const Api = function(container){
         console.log("API : init() sources : " , playlistManager.getCurrentSources());
 
         initProvider();
-    };
-    that.getProviderName = () => {
-        if(currentProvider){
-            return currentProvider.getName();
-        }else{
-            return null;
-        }
-
-    };
-    that.getMseInstance = () => {
-        if(currentProvider){
-            return currentProvider.getMse();
-        }else{
-            return null;
-        }
-
     };
     that.getConfig = () => {
         console.log("API : getConfig()", playerConfig.getConfig());
@@ -395,40 +354,6 @@ const Api = function(container){
 
         return index;
     };
-
-
-
-    that.getQualityLevels = () =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : getQualityLevels() ", currentProvider.getQualityLevels());
-        return currentProvider.getQualityLevels();
-    };
-    that.getCurrentQuality = () =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : getCurrentQuality() ", currentProvider.getCurrentQuality());
-        return currentProvider.getCurrentQuality();
-    };
-    that.setCurrentQuality = (qualityIndex) =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : setCurrentQuality() ", qualityIndex);
-
-        return currentProvider.setCurrentQuality(qualityIndex);
-    };
-    that.isAutoQuality = () => {
-        if(!currentProvider){return null;}
-
-        console.log("API : isAutoQuality()");
-        return currentProvider.isAutoQuality();
-    };
-    that.setAutoQuality = (isAuto) => {
-        if(!currentProvider){return null;}
-
-        console.log("API : setAutoQuality() ", isAuto);
-        return currentProvider.setAutoQuality(isAuto);
-    }
 
     that.getBuffer = () => {
         if(!currentProvider){return null;}
