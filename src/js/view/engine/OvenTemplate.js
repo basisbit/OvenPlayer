@@ -69,18 +69,6 @@ const OvenTemplate = function (container, templateName, playerConfig, data, even
             };
             viewEvents[id] = {name: eventName, target: target, callback: wrappedFunc};
 
-            /*$template.get().addEventListener(eventName,function(evt){
-                var gtarget = evt.target;
-                while (gtarget!= null){
-                    if (gtarget.isEqualNode($target.get())){
-                        console.log("isEqual", gtarget, $target.get());
-                        wrappedFunc(evt);
-                        return;
-                    }
-                    gtarget = gtarget.parentElement;
-                }
-            }, true);*/
-
             //sometimes target is NodeList
             let nodeLength = $target.get().length;
             if(nodeLength > 1){

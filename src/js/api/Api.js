@@ -6,7 +6,6 @@ import PlaylistManager from "api/playlist/Manager";
 import ProviderController from "api/provider/Controller";
 import {READY, ERRORS, ERROR, INIT_UNKNWON_ERROR, INIT_UNSUPPORT_ERROR, DESTROY, PLAYER_WEBRTC_SET_LOCAL_DESC_ERROR,
      ALL_PLAYLIST_ENDED} from "api/constants";
-import {version} from 'version';
 import {analUserAgent} from "utils/browser";
 
 /**
@@ -18,9 +17,6 @@ import {analUserAgent} from "utils/browser";
 const Api = function(container){
     const that = {};
     EventEmitter(that);
-
-
-    console.log("[[OvenPlayer]] v."+ version);
     console.log("API loaded.");
 
     let playlistManager = PlaylistManager(that);
@@ -481,10 +477,6 @@ const Api = function(container){
         if(OvenPlayerSDK.getPlayerList().length  === 0){
             console.log("OvenPlayerSDK.playerList",  OvenPlayerSDK.getPlayerList());
         }
-    };
-
-    that.getVersion = () => {
-        return "v."+version;
     };
 
     return that;

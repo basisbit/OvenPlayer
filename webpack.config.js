@@ -11,30 +11,6 @@ const banner = packageInfo.name +  ' | ' +
     packageInfo.license + ') | Github : ' +
     packageInfo.homepage;
 
-const getBuildVersion = function (build) {
-    let gitRevisionPlugin = new GitRevisionPlugin();
-    let status = "";
-
-
-    const generate = function(){
-        let date = new Date();
-        const pad = function(n){  // always returns a string
-            return (n < 10 ? '0' : '') + n;
-        };
-        return date.getFullYear() +
-            pad(date.getMonth() + 1) +
-            pad(date.getDate()) +
-            pad(date.getHours())
-    };
-
-    if(env.npm_lifecycle_event && env.npm_lifecycle_event =="watch"){
-        status = "localbuild";
-    }else{
-        status = "rev."+gitRevisionPlugin.version();
-    }
-    return `${build.version}-${generate()}-${status}`;
-}
-
 const defaultConfig = {
     node: {
         fs: 'empty'
@@ -121,9 +97,6 @@ const extendConfig = function (){
             },
             plugins: [
                 new GitRevisionPlugin(),
-                new webpack.DefinePlugin({
-                    __VERSION__: `'${getBuildVersion(packageInfo)}'`
-                }),
                 new webpack.BannerPlugin(banner),
                 new BundleAnalyzerPlugin({
                     analyzerMode: 'disabled'
@@ -153,9 +126,6 @@ const extendConfig = function (){
             },
             plugins: [
                 new GitRevisionPlugin(),
-                new webpack.DefinePlugin({
-                    __VERSION__: `'${getBuildVersion(packageInfo)}'`
-                }),
                 new webpack.BannerPlugin(banner),
                 new BundleAnalyzerPlugin({
                     analyzerMode: 'static'
