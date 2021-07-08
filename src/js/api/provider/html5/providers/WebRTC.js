@@ -51,7 +51,7 @@ const WebRTC = function(element, playerConfig){
             element.srcObject = stream;
         };
 
-        webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfig);
+        webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfig.getConfig());
 
         webrtcLoader.connect(function(){
             //ToDo : resolve not workring

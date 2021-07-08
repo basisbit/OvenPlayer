@@ -13,7 +13,7 @@ import {
 } from "api/constants";
 
 
-const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigger, playerConfig) {
+const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigger, playerConfigObj) {
 
     let defaultConnectionConfig = {};
 
@@ -36,18 +36,18 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
 
     let recorverPacketLoss = true;
 
-    if (playerConfig.getConfig().webrtcConfig &&
-        playerConfig.getConfig().webrtcConfig.recorverPacketLoss === false) {
+    if (playerConfigObj.webrtcConfig &&
+        playerConfigObj.webrtcConfig.recorverPacketLoss === false) {
 
-        recorverPacketLoss = playerConfig.getConfig().webrtcConfig.recorverPacketLoss;
+        recorverPacketLoss = playerConfigObj.webrtcConfig.recorverPacketLoss;
     }
 
     let generatePublicCandidate = true;
 
-    if (playerConfig.getConfig().webrtcConfig &&
-        playerConfig.getConfig().webrtcConfig.generatePublicCandidate === false) {
+    if (playerConfigObj.webrtcConfig &&
+        playerConfigObj.webrtcConfig.generatePublicCandidate === false) {
 
-        generatePublicCandidate = playerConfig.getConfig().webrtcConfig.generatePublicCandidate;
+        generatePublicCandidate = playerConfigObj.webrtcConfig.generatePublicCandidate;
     }
 
     let statisticsTimer = null;
@@ -112,7 +112,7 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
                     return;
                 }
 
-                if (playerConfig.getConfig().autoFallback && stats) {
+                if (playerConfigObj.autoFallback && stats) {
 
                     stats.forEach(function (state) {
 
@@ -231,13 +231,13 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
         let peerConnectionConfig = {};
 
         // first priority using ice servers from player setting.
-        if (playerConfig.getConfig().webrtcConfig && playerConfig.getConfig().webrtcConfig.iceServers) {
+        if (playerConfigObj.webrtcConfig && playerConfigObj.webrtcConfig.iceServers) {
 
-            peerConnectionConfig.iceServers = playerConfig.getConfig().webrtcConfig.iceServers;
+            peerConnectionConfig.iceServers = playerConfigObj.webrtcConfig.iceServers;
 
-            if (playerConfig.getConfig().webrtcConfig.iceTransportPolicy) {
+            if (playerConfigObj.webrtcConfig.iceTransportPolicy) {
 
-                peerConnectionConfig.iceTransportPolicy = playerConfig.getConfig().webrtcConfig.iceTransportPolicy;
+                peerConnectionConfig.iceTransportPolicy = playerConfigObj.webrtcConfig.iceTransportPolicy;
             }
         } else if (iceServers) {
 
@@ -410,9 +410,9 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
             mainStream = e.streams[0];
             loadCallback(e.streams[0]);
 
-            if (playerConfig.getConfig().webrtcConfig && playerConfig.getConfig().webrtcConfig.playoutDelayHint) {
+            if (playerConfigObj.webrtcConfig && playerConfigObj.webrtcConfig.playoutDelayHint) {
 
-                let hint = playerConfig.getConfig().webrtcConfig.playoutDelayHint;
+                let hint = playerConfigObj.webrtcConfig.playoutDelayHint;
 
                 const receivers = mainPeerConnectionInfo.peerConnection.getReceivers();
 
