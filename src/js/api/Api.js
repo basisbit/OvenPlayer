@@ -282,24 +282,6 @@ const Api = function(container){
         console.log("API : pause() ");
         currentProvider.pause();
     };
-    that.seek = (position) => {
-        if(!currentProvider){return null;}
-
-        console.log("API : seek() "+ position);
-        currentProvider.seek(position);
-    };
-    that.setPlaybackRate = (playbackRate) =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : setPlaybackRate() ", playbackRate);
-        return currentProvider.setPlaybackRate(playerConfig.setPlaybackRate(playbackRate));
-    };
-    that.getPlaybackRate = () =>{
-        if(!currentProvider){return null;}
-
-        console.log("API : getPlaybackRate() ", currentProvider.getPlaybackRate());
-        return currentProvider.getPlaybackRate();
-    };
 
     that.getPlaylist = () => {
         console.log("API : getPlaylist() ", playlistManager.getPlaylist());

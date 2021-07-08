@@ -14,8 +14,6 @@ const Configurator = function(options, provider){
     const composeSourceOptions = function(options){
         const Defaults = {
             mediaContainer : "",
-            playbackRates: [2, 1.5, 1, 0.5, 0.25],
-            playbackRate: 1,
             mute: false,
             volume: 100,
             loop : false,
@@ -83,22 +81,7 @@ const Configurator = function(options, provider){
             }
         }
         config.systemText = _.findWhere(SYSTEM_TEXT , {"lang": config.lang});
-
-        let playbackRates = config.playbackRates;
-
-        playbackRates = playbackRates.filter(rate => _.isNumber(rate) && rate >= 0.25 && rate <= 4).map(rate => Math.round(rate * 4) / 4);
-
-        if (playbackRates.indexOf(1) < 0) {
-            playbackRates.push(1);
-        }
-        playbackRates.sort();
-
-        config.playbackRates = playbackRates;
-
-        if (config.playbackRates.indexOf(config.playbackRate) < 0) {
-            config.playbackRate = 1;
-        }
-
+        
         const configPlaylist = config.playlist;
         if (!configPlaylist) {
             const obj = _.pick(config, [
@@ -142,20 +125,6 @@ const Configurator = function(options, provider){
 
     that.getContainer = () => {
         return spec.mediaContainer;
-    };
-    /*that.isFullscreen = () => {
-        return spec.isFullscreen;
-    }
-    that.setFullscreen = (isFullscreen) => {
-        return spec.isFullscreen = isFullscreen;
-    }*/
-
-    that.getPlaybackRate =()=>{
-        return spec.playbackRate;
-    };
-    that.setPlaybackRate =(playbackRate)=>{
-        spec.playbackRate = playbackRate;
-        return playbackRate;
     };
 
     that.getQualityLabel = () => {
@@ -210,9 +179,6 @@ const Configurator = function(options, provider){
         return spec.controls;
     };
 
-    that.getPlaybackRates =()=>{
-        return spec.playbackRates;
-    };
     that.getBrowser = () => {
         return spec.browser;
     };
