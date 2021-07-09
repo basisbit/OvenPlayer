@@ -80,5 +80,7 @@ const WebRTC = function(element, playerConfigObj){
     return that;
 };
 
+window.WebRTC = WebRTC;
+
 
 export default WebRTC;

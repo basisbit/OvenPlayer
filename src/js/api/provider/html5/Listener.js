@@ -35,7 +35,6 @@ import {errorTrigger} from "api/provider/utils";
 const Listener = function(element, provider, videoEndedCallback, playerConfigObj){
     const lowLevelEvents = {};
 
-    console.log("EventListener loaded.",element ,provider );
     const that = {};
 
     let stalled = -1;

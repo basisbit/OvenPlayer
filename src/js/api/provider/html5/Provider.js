@@ -16,7 +16,6 @@ import {
  * @param   onExtendedLoad on load handler
  * */
 const Provider = function (spec, playerConfigObj, onExtendedLoad){
-    console.log("[Provider] loaded. ");
 
     let that ={};
     EventEmitter(that);
@@ -31,8 +30,8 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
 
     const _load = (lastPlayPosition) =>{
 
-        const source =  spec.sources[spec.currentSource];
-        spec.framerate = source.framerate;
+        const source = playerConfigObj.sources[0];
+        spec.framerate = 0;
 
         that.setVolume(100);
 
@@ -77,17 +76,12 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
     };
 
     that.getName = () => {
-        return spec.name;
-    };
-    that.getMse = () => {
-        return spec.mse;
+        return playerConfigObj.name;
     };
     that.canSeek = () => {
-        return spec.canSeek;
+        return false;
     };
-    that.setCanSeek = (canSeek) => {
-        spec.canSeek = canSeek;
-    };
+    that.setCanSeek = (canSeek) => {;};
     that.isSeeking = ()=>{
         return spec.seeking;
     };
@@ -106,8 +100,6 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
             let prevState = spec.state;
 
             console.log("Provider : setState()", newState);
-
-            console.log("Provider : triggerSatatus", newState);
 
             switch (newState) {
                 case STATE_COMPLETE :
@@ -131,8 +123,6 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
                 prevstate: prevState,
                 newstate: spec.state
             });
-
-
         }
     };
 
@@ -237,27 +227,9 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
                 promise.then(function(){
                     isPlayingProcessing = false;
                     console.log("Provider : video play success");
-                    /*
-                    if(mutedPlay){
-                        that.trigger(PLAYER_WARNING, {
-                            message : WARN_MSG_MUTEDPLAY,
-                            timer : 10 * 1000,
-                            iconClass : UI_ICONS.volume_mute,
-                            onClickCallback : function(){
-                                that.setMute(false);
-                            }
-                        });
-                    }*/
                 }).catch(error => {
                     console.log("Provider : video play error", error.message);
-
                     isPlayingProcessing = false;
-                    /*
-                    if(!mutedPlay){
-                        that.setMute(true);
-                        that.play(true);
-                    }
-                    */
                 });
             }else{
                 //IE promise is undefinded.
@@ -291,7 +263,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
             return [];
         }
 
-        return spec.sources.map(function(source, index) {
+        return playerConfigObj.sources.map(function(source, index) {
 
             var obj = {
                 file: source.file,

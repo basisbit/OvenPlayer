@@ -399,9 +399,7 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
         };
         peerConnection.ontrack = function (e) {
 
-            console.log("stream received.");
-
-            console.log('Recovery On Packet Loss :', recorverPacketLoss);
+            console.log('Stream track received. Recovery On Packet Loss :', recorverPacketLoss);
 
             if (recorverPacketLoss) {
                 extractLossPacketsOnNetworkStatus(mainPeerConnectionInfo);
@@ -421,7 +419,7 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
                     let receiver = receivers[i];
 
                     receiver.playoutDelayHint = hint;
-                    console.log("WebRTC playoutDelayHint", receiver, hint);
+                    //console.log("WebRTC playoutDelayHint", receiver, hint);
                 }
 
             }
