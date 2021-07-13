@@ -6,7 +6,7 @@ import EventsListener from "api/provider/html5/Listener";
 import {
     STATE_IDLE, STATE_PLAYING, STATE_PAUSED, STATE_COMPLETE,
     PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
-    CONTENT_SOURCE_CHANGED, CONTENT_MUTE
+    CONTENT_SOURCE_CHANGED, CONTENT_MUTE, ERROR, STATE_ERROR
 } from "api/constants";
 
 /**
@@ -33,7 +33,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
         const source = playerConfigObj.sources[0];
         spec.framerate = 0;
 
-        that.setVolume(100);
+        that.volume = playerConfigObj.volume;
 
         if(onExtendedLoad){
             onExtendedLoad(source, lastPlayPosition);
@@ -155,7 +155,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
     };
     that.getVolume = () =>{
         if(!elVideo){
-            return 0;
+            return playerConfigObj.volume;
         }
         return elVideo.volume*100;
     };
@@ -196,7 +196,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
         _load(lastPlayPosition || 0);
 
         return new Promise(function (resolve, reject) {
-            that.setVolume(100);
+            that.setVolume(playerConfigObj.volume);
             resolve();
         });
 
@@ -362,8 +362,16 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
             return method.apply(that, arguments);
         };
     };
-    return that;
 
+    that.on("all", function(name, data){
+        if(name === "complete" || name === ERROR || (data && data.newState === ERROR)){
+            console.warn('WebRTC video playback ended or errored. Notifying video element.');
+            const event = new Event('WebRtcVideoPlaybackError')
+            elVideo.dispatchEvent(event);
+        }
+    });
+
+    return that;
 };
 
 export default Provider;

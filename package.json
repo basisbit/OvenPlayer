@@ -12,12 +12,12 @@
     "url": "git+https://github.com/AirenSoft/OvenPlayer.git"
   },
   "keywords": [],
-  "author": "AirenSoft Co., Ltd.",
-  "license": "https://github.com/AirenSoft/OvenPlayerPrivate/blob/master/LICENSE",
+  "author": "AirenSoft Co., Ltd. and contributors",
+  "license": "https://github.com/basisbit/OvenPlayer/blob/master/LICENSE",
   "bugs": {
     "url": "https://github.com/AirenSoft/OvenPlayer/issues"
   },
-  "homepage": "https://github.com/AirenSoft/OvenPlayer",
+  "homepage": "https://github.com/basisbit/OvenPlayer",
   "devDependencies": {
     "webpack-bundle-analyzer": "^3.0.3"
   },

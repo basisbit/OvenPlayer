@@ -93,9 +93,6 @@ export const UI_ICONS = {
 };
 
 
-export const ERRORS = {codes : ""};
-
-
 export const SYSTEM_TEXT = [
     {
         "lang" : "en",
@@ -209,3 +206,6 @@ export const SYSTEM_TEXT = [
         }
     }
 ];
+
+
+export const ERRORS = {codes : SYSTEM_TEXT[0].api.error};
