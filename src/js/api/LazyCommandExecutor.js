@@ -28,12 +28,12 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
             }
         };
     });
-    const executeQueuedCommands = function () {
+    var executeQueuedCommands = function () {
         while (commandQueue.length > 0) {
             const { command, args } = commandQueue.shift();
             (undecoratedMethods[command] || instance[command]).apply(instance, args);
         }
-    };
+    }
 
     that.setExecuteMode = (mode) => {
         executeMode = mode;
@@ -42,15 +42,15 @@ const LazyCommandExecutor = function (instance, queuedCommands) {
     that.getUndecoratedMethods = function(){
         console.log("LazyCommandExecutor : getUndecoratedMethods()", undecoratedMethods);
         return undecoratedMethods;
-    };
+    }
     that.getQueue = function(){
         console.log("LazyCommandExecutor : getQueue()", getQueue);
         return commandQueue;
-    };
+    }
     that.addQueue = function(command, args){
         console.log("LazyCommandExecutor : addQueue()", command, args);
         commandQueue.push({ command, args });
-    };
+    }
 
     that.flush = function(){
         console.log("LazyCommandExecutor : flush()");

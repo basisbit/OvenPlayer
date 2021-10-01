@@ -8,98 +8,113 @@ __webpack_public_path__ = getScriptPath('ovenplayer.sdk.js');
 /**
  * Main OvenPlayerSDK object
  */
-function ovenPlayerFactory() {
+const OvenPlayerSDK = window.OvenPlayerSDK = {};
 
-    const OvenPlayerSDK = {};
+const playerList = OvenPlayerSDK.playerList = [];
 
-    const playerList = OvenPlayerSDK.playerList = [];
+export const checkAndGetContainerElement = function(container) {
+    if (!container) {
 
-    /**
-     * Create player instance and return it.
-     *
-     * @param      {string | dom element} container  Id of container element or container element
-     * @param      {object} options  The options
-     */
-    OvenPlayerSDK.create = function (container, options) {
+        // TODO(rock): Should cause an error.
+        return null;
+    }
 
-        if (!window.OvenPlayerConsole || Object.keys(window.OvenPlayerConsole).length === 0) {
-            window.OvenPlayerConsole = {};
-            OvenPlayerConsole['log'] = function () {
-            };
+    let containerElement = null;
+
+    if (typeof container === 'string') {
+
+        containerElement = document.getElementById(container);
+    } else if (container.nodeType) {
+
+        containerElement = container;
+    } else {
+        // TODO(rock): Should cause an error.
+        return null;
+    }
+
+    return containerElement;
+}
+
+/**
+ * Create player instance and return it.
+ *
+ * @param      {string | dom element} container  Id of container element or container element
+ * @param      {object} options  The options
+ */
+OvenPlayerSDK.create = function(container, options) {
+
+    let containerElement = checkAndGetContainerElement(container);
+
+    const playerInstance = API(containerElement);
+    playerInstance.init(options);
+
+    playerList.push(playerInstance);
+
+    return playerInstance;
+};
+
+/**
+ * Gets the player instance list.
+ *
+ * @return     {array}  The player list.
+ */
+OvenPlayerSDK.getPlayerList = function() {
+
+    return playerList;
+};
+
+/**
+ * Gets the player instance by container id.
+ *
+ * @param      {string}  containerId  The container identifier
+ * @return     {obeject | null}  The player instance.
+ */
+OvenPlayerSDK.getPlayerByContainerId = function(containerId) {
+
+    for (let i = 0; i < playerList.length; i ++) {
+
+        if (playerList[i].getContainerId() === containerId) {
+
+            return playerList[i];
         }
+    }
 
-        let containerElement = checkAndGetContainerElement(container);
+    return null;
+};
 
-        const playerInstance = API(containerElement);
-        playerInstance.init(options);
+/**
+ * Gets the player instance by index.
+ *
+ * @param      {number}  index   The index
+ * @return     {object | null}  The player instance.
+ */
+OvenPlayerSDK.getPlayerByIndex = function(index) {
 
-        playerList.push(playerInstance);
+    const playerInstance = playerList[index];
+
+    if (playerInstance) {
 
         return playerInstance;
-    };
-
-    /**
-     * Gets the player instance list.
-     *
-     * @return     {array}  The player list.
-     */
-    OvenPlayerSDK.getPlayerList = function () {
-
-        return playerList;
-    };
-
-    /**
-     * Gets the player instance by container id.
-     *
-     * @param      {string}  containerId  The container identifier
-     * @return     {obeject | null}  The player instance.
-     */
-    OvenPlayerSDK.getPlayerByContainerId = function (containerId) {
-
-        for (let i = 0; i < playerList.length; i++) {
-
-            if (playerList[i].getContainerId() === containerId) {
-
-                return playerList[i];
-            }
-        }
+    } else {
 
         return null;
-    };
+    }
+};
 
-    /**
-     * Gets the player instance by index.
-     *
-     * @param      {number}  index   The index
-     * @return     {object | null}  The player instance.
-     */
-    OvenPlayerSDK.getPlayerByIndex = function (index) {
+/**
+ * Remove the player instance by playerId.
+ *
+ * @param      {playerId}  id
+ * @return     {null}
+ */
+OvenPlayerSDK.removePlayer = function(playerId) {
+    for (let i = 0; i < playerList.length; i ++) {
 
-        const playerInstance = playerList[index];
+        if (playerList[i].getContainerId() === playerId) {
 
-        if (playerInstance) {
-
-            return playerInstance;
-        } else {
-
-            return null;
+            playerList.splice(i, 1);
         }
-    };
-
-    /**
-     * Remove the player instance by playerId.
-     *
-     * @param      {playerId}  id
-     * @return     {null}
-     */
-    OvenPlayerSDK.removePlayer = function (playerId) {
-        for (let i = 0; i < playerList.length; i++) {
-
-            if (playerList[i].getContainerId() === playerId) {
-
-                playerList.splice(i, 1);
-            }
-        }
+    }
 
 };
 
@@ -114,8 +129,8 @@ OvenPlayerSDK.generateWebrtcUrls = function(sources) {
         if(source.host && source.application && source.stream){
             return {file : source.host + "/" + source.application + "/" + source.stream, type : "webrtc", label : source.label ? source.label : "webrtc-"+(index+1) };
         }
-        return isDebugMode;
-    };
+    });
+};
 
 /**
  * Whether show the player core log or not.

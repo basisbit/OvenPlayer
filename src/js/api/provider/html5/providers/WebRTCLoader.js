@@ -34,12 +34,12 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
     //closed websocket by ome or client.
     let wsClosedByPlayer = false;
 
-    let recorverPacketLoss = false;
+    let recorverPacketLoss = true;
 
     if (playerConfigObj.webrtcConfig &&
-        playerConfigObj.webrtcConfig.recorverPacketLoss === true) {
+        playerConfigObj.webrtcConfig.recorverPacketLoss === false) {
 
-        recorverPacketLoss = true;
+        recorverPacketLoss = playerConfigObj.webrtcConfig.recorverPacketLoss;
     }
 
     let generatePublicCandidate = true;
@@ -278,7 +278,7 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
                     }
                 }
 
-                regIceServer.username = iceServer.username || iceServer.user_name;
+                regIceServer.username = iceServer.user_name;
                 regIceServer.credential = iceServer.credential;
 
                 peerConnectionConfig.iceServers.push(regIceServer);
@@ -649,9 +649,7 @@ const WebRTCLoader = function (provider, webSocketUrl, loadCallback, errorTrigge
 
                 if (message.command === 'offer') {
 
-                    let iceServers =  message.iceServers || message.ice_servers;
-
-                    createMainPeerConnection(message.id, message.peer_id, message.sdp, message.candidates, iceServers, resolve);
+                    createMainPeerConnection(message.id, message.peer_id, message.sdp, message.candidates, message.ice_servers, resolve);
                     if (message.peer_id === 0) {
                         provider.trigger(OME_P2P_MODE, false);
                     } else {

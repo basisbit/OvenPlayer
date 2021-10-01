@@ -20,10 +20,14 @@ const Controller = function () {
 
     const ProviderLoader = {
         webrtc: function () {
-
-            const provider = WebRTC;
-            registeProvider(PROVIDER_WEBRTC, provider);
-            return {name: PROVIDER_WEBRTC, provider: provider};
+            return require.ensure(['api/provider/html5/providers/WebRTC'], function (require) {
+                    const provider = require('api/provider/html5/providers/WebRTC').default;
+                    registeProvider(PROVIDER_WEBRTC, provider);
+                    return {name: PROVIDER_WEBRTC, provider: provider};
+                }, function (err) {
+                    throw new Error('Network error');
+                }, 'ovenplayer.provider.WebRTCProvider'
+            );
         },
     };
 

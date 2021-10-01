@@ -5,7 +5,6 @@ import OvenTemplate from 'view/engine/OvenTemplate';
 import Helpers from 'view/components/helpers/main';
 import PanelManager from "view/global/PanelManager";
 import LA$ from 'utils/likeA$';
-import ResizeSensor from "utils/resize-sensor";
 import {
     READY,
     DESTROY,
@@ -24,8 +23,9 @@ import {
     PLAYER_CLICKED,
     ERROR
 } from "api/constants";
+import ResizeSensor from "resize-sensor";
 
-import '../../stylesheet/ovenplayer.less';
+require('../../stylesheet/ovenplayer.less');
 
 const View = function($container){
     let viewTemplate = "", helper = "", $playerRoot, api = "", autoHideTimer = "", playerState = STATE_IDLE;
@@ -60,7 +60,7 @@ const View = function($container){
                 }, 3000);
             }
         }
-    }
+    };
     function togglePlayPause() {
         const currentState = playerState;
 
@@ -74,7 +74,7 @@ const View = function($container){
         }else if(currentState === STATE_PLAYING){
             api.pause();
         }
-    }
+    };
     function seek(seconds, isRewind) {
 
         const duration = api.getDuration();
@@ -88,7 +88,7 @@ const View = function($container){
         }
 
         api.seek(position);
-    }
+    };
     function volume(isUp){
         const currentVolumn = api.getVolume();
         let newVolume = 0;
@@ -98,14 +98,7 @@ const View = function($container){
             newVolume = Math.max(currentVolumn - 5, 0);
         }
         api.setVolume(newVolume);
-    }
-    function createContextPanel(pageX, pageY){
-        if(contextPanel){
-            contextPanel.destroy();
-            contextPanel = null;
-        }
-        contextPanel = ContextPanel($playerRoot, api, {pageX : pageX, pageY : pageY});
-    }
+    };
 
     function calcPlayerWidth(){
         let playerWidth = $playerRoot.width();
@@ -127,13 +120,12 @@ const View = function($container){
             screenSize = "large";
             $playerRoot.addClass("large");
         }
-    }
+    };
 
     const onRendered = function($current, template){
         $playerRoot = $current;
         viewTemplate = template;
         calcPlayerWidth();
-        currentPlayerSize = screenSize;
         new ResizeSensor($playerRoot.get(), function() {
 
             $playerRoot.removeClass("large");
@@ -147,6 +139,7 @@ const View = function($container){
                 if(api){
                     api.trigger(PLAYER_RESIZED, currentPlayerSize);
                 }
+
             }
         });
 
@@ -290,29 +283,6 @@ const View = function($container){
     that.setApi = (playerInstance) => {
         api = playerInstance;
 
-        api.on(READY, function(data) {
-
-            if(!controls){
-                controls = Controls($playerRoot.find(".op-ui"), playerInstance);
-            }
-
-            if (!showControlBar) {
-                $playerRoot.addClass("op-no-controls");
-            }
-
-        });
-
-        api.on(ERROR, function(error) {
-            if(api){
-                let sources = api.getSources()||[];
-                if(controls && (sources.length <= 1)){
-                    // controls.destroy();
-                    // controls = null;
-                }
-            }
-
-        });
-
         api.on(DESTROY, function(data) {
             viewTemplate.destroy();
         });
@@ -343,15 +313,6 @@ const View = function($container){
                 $playerRoot.find('.op-ratio').css('padding-bottom', ratio + '%');
             }
         }
-
-        api.showControls = function (show) {
-            if (show) {
-                $playerRoot.removeClass("op-no-controls");
-                setHide(false, true);
-            } else {
-                $playerRoot.addClass("op-no-controls");
-            }
-        };
     };
 
 

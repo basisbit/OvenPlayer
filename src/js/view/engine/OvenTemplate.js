@@ -69,38 +69,19 @@ const OvenTemplate = function (container, templateName, playerConfig, data, even
             };
             viewEvents[id] = {name: eventName, target: target, callback: wrappedFunc};
 
-            /*$template.get().addEventListener(eventName,function(evt){
-                var gtarget = evt.target;
-                while (gtarget!= null){
-                    if (gtarget.isEqualNode($target.get())){
-                        console.log("isEqual", gtarget, $target.get());
-                        wrappedFunc(evt);
-                        return;
-                    }
-                    gtarget = gtarget.parentElement;
-                }
-            }, true);*/
-
-            let eventOption = null;
-
-            if (eventName.indexOf('touch') > -1) {
-                eventOption = { passive: true };
-            }
-
             //sometimes target is NodeList
             let nodeLength = $target.get().length;
-
             if(nodeLength > 1){
                 let nodeList = $target.get();
                 for(let i = 0; i < nodeLength; i ++){
-                    nodeList[i].addEventListener(eventName, wrappedFunc, eventOption);
+                    nodeList[i].addEventListener(eventName, wrappedFunc);
                 }
                 //IE NodeList doesn't have forEach. It's wack.
                 //$target.get().forEach(function($item){
                 //    $item.addEventListener(eventName, wrappedFunc);
                 //});
             }else{
-                $target.get().addEventListener(eventName, wrappedFunc, eventOption);
+                $target.get().addEventListener(eventName, wrappedFunc);
             }
 
 

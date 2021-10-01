@@ -37,18 +37,11 @@ const Helpers = function($container, api){
                 return;
             }
 
-            if (api.getState() === STATE_IDLE || api.getState() === STATE_COMPLETE) {
-
-                if (messageBox) {
-                    messageBox.destroy();
-                }
-
-                if (bigButton) {
-                    bigButton.destroy();
-                }
-
-                bigButton = BigButton($current, api, state);
+            if(bigButton){
+                bigButton.destroy();
             }
+
+            bigButton = BigButton($current, api, state);
         }
 
         spinner = Spinner($current, api);
