@@ -33,7 +33,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
         const source = playerConfigObj.sources[0];
         spec.framerate = 0;
 
-        that.volume = playerConfigObj.volume;
+        that.setVolume(playerConfigObj.volume);
 
         if(onExtendedLoad){
             onExtendedLoad(source, lastPlayPosition);
