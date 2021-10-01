@@ -17,6 +17,8 @@ const WebRTC = function(element, playerConfigObj){
     let webrtcLoader = null;
     let superDestroy_func  = null;
 
+    let audioCtx = null;
+
     let spec = {
         name : PROVIDER_WEBRTC,
         element : element,
@@ -35,6 +37,27 @@ const WebRTC = function(element, playerConfigObj){
         sources : []
     };
 
+    const device = () => {
+        return {
+            isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent),
+            iOS: /iPhone|iPad|iPod/i.test(navigator.userAgent)
+        }
+    };
+
+    const unlockAudio = (audioCtx) => {
+        let currentDevice = device();
+        let called = false;
+        if (currentDevice.isMobile && audioCtx.state === 'suspended') {
+
+            document.addEventListener('touchend', () => {
+                if (!called && audioCtx.state !== 'running') {
+                    audioCtx.resume();
+                    called = true
+                }
+            })
+        }
+    };
+
     that = Provider(spec, playerConfigObj, function(source){
         console.log("WEBRTC : onBeforeLoad : ", source);
         if(webrtcLoader){
@@ -42,14 +65,29 @@ const WebRTC = function(element, playerConfigObj){
             webrtcLoader = null;
         }
 
-        let loadCallback = function(stream){
+		let loadCallback = function(stream){
+			if (element.srcObject) {
+				element.srcObject = null;
+			}
 
-            if (element.srcObject) {
-                element.srcObject = null;
-            }
+			if (audioCtx) {
+				audioCtx.close();
+				audioCtx = null;
+			}
 
-            element.srcObject = stream;
-        };
+			element.srcObject = stream;
+
+			// Add some weird code to avoid the audio delay bug in Safari.
+			// We don't even know why this code solves the audio delay.
+			const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+			// This code resolves audio delay in MacOS not IOS.
+			audioCtx = new AudioContext();
+			unlockAudio(audioCtx);
+
+			// This code resolves audio delay in IOS.
+			audioCtx.createMediaStreamSource(stream);
+		};
 
         webrtcLoader = WebRTCLoader(that, source.file, loadCallback, errorTrigger, playerConfigObj);
 
