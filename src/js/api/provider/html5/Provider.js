@@ -8,6 +8,7 @@ import {
     PLAYER_STATE, PLAYER_COMPLETE, PLAYER_PAUSE, PLAYER_PLAY,
     CONTENT_SOURCE_CHANGED, CONTENT_MUTE, ERROR, STATE_ERROR
 } from "api/constants";
+import {CONTENT_META} from "../../constants";
 
 /**
  * @brief   Core For Html5 Video.
@@ -48,6 +49,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
             // sourceElement.src = source.file;
 
             const sourceChanged = (source.file !== previousSource);
+
             if (sourceChanged) {
 
                 elVideo.src = source.file;
@@ -59,11 +61,6 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
                 if (previousSource || previousSource === '') {
 
                     elVideo.load();
-                }
-
-
-                if(lastPlayPosition && lastPlayPosition > 0){
-                    that.seek(lastPlayPosition);
                 }
 
             }
@@ -152,6 +149,7 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
             return false;
         }
         elVideo.volume = volume/100;
+        playerConfig.setVolume(volume);
     };
     that.getVolume = () =>{
         if(!elVideo){
@@ -165,27 +163,29 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
         }
         if (typeof state === 'undefined') {
 
-            elVideo.muted = !elVideo.muted;
+            const muted = playerConfig.isMute();
+
+            elVideo.muted = !muted;
+            playerConfig.setMute(!muted);
 
             that.trigger(CONTENT_MUTE, {
-                mute: elVideo.muted
+                mute: playerConfig.isMute()
             });
 
         } else {
 
             elVideo.muted = state;
+            playerConfig.setMute(state);
 
             that.trigger(CONTENT_MUTE, {
-                mute: elVideo.muted
+                mute: playerConfig.isMute()
             });
         }
         return elVideo.muted;
     };
     that.getMute = () =>{
-        if(!elVideo){
-            return false;
-        }
-        return elVideo.muted;
+
+        return playerConfig.isMute();
     };
 
     that.preload = (sources, lastPlayPosition) =>{
@@ -236,7 +236,6 @@ const Provider = function (spec, playerConfigObj, onExtendedLoad){
                 console.log("Provider : video play success (ie)");
                 isPlayingProcessing = false;
             }
-
         }
 
     };
